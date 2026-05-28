@@ -99,24 +99,45 @@
 <div id="main"></div>
 
 <script>
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxijGk1dDAHg9aCCCDCVD3Um9rlA_qi26gycAgUXsrtbk0FM1mALQw-io5n2t3VjoB0/exec?key=deltoro2026';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxijGk1dDAHg9aCCCDCVD3Um9rlA_qi26gycAgUXsrtbk0FM1mALQw-io5n2t3VjoB0/exec';
 let chartDonut = null, chartBar = null, activeTab = 'tramite', datosGlobales = null;
 
-async function cargarDatos() {
+function cargarDatos() {
   show('loading'); hide('main');
   document.getElementById('error-box').style.display = 'none';
-  try {
-    const url = APPS_SCRIPT_URL;
-    const res = await fetch(url);
-    if (!res.ok) throw new Error('No se pudo descargar el archivo de Drive');
-    const data = await res.json();
+
+  const callbackName = 'dashboardCallback_' + Date.now();
+  const script = document.createElement('script');
+  const timeout = setTimeout(() => {
+    document.getElementById('error-box').style.display = 'block';
+    document.getElementById('error-msg').textContent = 'Error: No se pudo conectar con el servidor. Verifica tu conexión.';
+    hide('loading');
+    delete window[callbackName];
+    document.body.removeChild(script);
+  }, 10000);
+
+  window[callbackName] = function(data) {
+    clearTimeout(timeout);
+    delete window[callbackName];
+    document.body.removeChild(script);
+    if (data.error) {
+      document.getElementById('error-box').style.display = 'block';
+      document.getElementById('error-msg').textContent = 'Error: ' + data.error;
+      hide('loading');
+      return;
+    }
     datosGlobales = data;
     renderDashboard(data);
-  } catch(e) {
+  };
+
+  script.src = APPS_SCRIPT_URL + '?key=deltoro2026&callback=' + callbackName;
+  script.onerror = function() {
+    clearTimeout(timeout);
     document.getElementById('error-box').style.display = 'block';
-    document.getElementById('error-msg').textContent = '⚠️ ' + e.message + ' — Asegúrate de que el archivo en Drive es público (cualquiera con el link puede ver)';
+    document.getElementById('error-msg').textContent = 'Error: No se pudo cargar el script.';
     hide('loading');
-  }
+  };
+  document.body.appendChild(script);
 }
 
 function renderDashboard(data) {
