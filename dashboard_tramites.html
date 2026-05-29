@@ -184,8 +184,7 @@ function cargarDatos() {
     datosGlobales = data;
     renderDashboard(data);
   };
-  script.src = APPS_SCRIPT_URL + '?key=deltoro2026&callback=' + callbackName;
-  script.onerror = function() {
+script.src = APPS_SCRIPT_URL + '?key=deltoro2026&callback=' + callbackName + '&t=' + Date.now();  script.onerror = function() {
     clearTimeout(timeout);
     document.getElementById('error-box').style.display = 'block';
     document.getElementById('error-msg').textContent = 'Error: No se pudo cargar el script.';
