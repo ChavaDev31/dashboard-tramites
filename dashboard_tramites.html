@@ -3,120 +3,149 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Panel de Trámites Operativos</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<title>Panel Operativo | Del Toro Asesores</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
-    --blue-dark:#0C447C; --blue-main:#185FA5; --blue-mid:#378ADD;
-    --blue-light:#85B7EB; --blue-pale:#E6F1FB;
-    --green:#1D9E75; --green-pale:#EAF3DE; --green-dark:#3B6D11;
-    --amber:#BA7517; --amber-pale:#FAEEDA;
-    --red:#A32D2D; --red-pale:#FCEBEB; --red-mid:#E24B4A;
-    --red-light:#F09595;
-    --gray-100:#F4F6F9; --gray-200:#E8EDF3; --gray-400:#8896AA;
-    --gray-700:#3D4F63; --gray-900:#1A2535; --white:#ffffff;
-    --radius-sm:6px; --radius-md:10px; --radius-lg:16px;
+    --bg-base: #0a0e1a;
+    --bg-card: #111827;
+    --bg-card2: #141d2e;
+    --border: #1e2d45;
+    --border-glow: #1e40af;
+    --blue: #3b82f6;
+    --blue-bright: #60a5fa;
+    --blue-pale: #1e3a5f;
+    --cyan: #06b6d4;
+    --cyan-pale: #0e4a5a;
+    --green: #10b981;
+    --green-pale: #064e3b;
+    --amber: #f59e0b;
+    --amber-pale: #451a03;
+    --red: #ef4444;
+    --red-bright: #f87171;
+    --red-pale: #450a0a;
+    --purple: #8b5cf6;
+    --purple-pale: #2e1065;
+    --gray: #4b5563;
+    --gray-light: #9ca3af;
+    --white: #f1f5f9;
+    --white-dim: #64748b;
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 16px;
   }
-  body { font-family:'DM Sans',sans-serif; background:#F0F4F9; color:var(--gray-900); min-height:100vh; padding:1.5rem; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Inter', sans-serif; background: var(--bg-base); color: var(--white); min-height: 100vh; padding: 1.5rem; }
 
   /* HEADER */
-  .header { background:var(--blue-main); border-radius:var(--radius-lg); padding:1.25rem 1.75rem; display:flex; align-items:center; justify-content:space-between; margin-bottom:1rem; flex-wrap:wrap; gap:12px; }
-  .header-left { display:flex; align-items:center; gap:14px; }
-  .header-icon { width:44px; height:44px; background:var(--blue-dark); border-radius:var(--radius-md); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-  .header-icon svg { width:22px; height:22px; stroke:#85B7EB; fill:none; stroke-width:1.8; }
-  .header-title { color:#E6F1FB; font-size:20px; font-weight:600; }
-  .header-sub { color:#85B7EB; font-size:12px; margin-top:2px; }
-  .header-right { display:flex; align-items:center; gap:10px; }
-  .badge-live { background:var(--blue-dark); color:#85B7EB; font-size:11px; font-weight:500; padding:5px 12px; border-radius:20px; display:flex; align-items:center; gap:6px; }
-  .dot-live { width:7px; height:7px; background:#5DCAA5; border-radius:50%; animation:pulse 2s infinite; }
-  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
-  .btn { background:var(--blue-dark); color:#85B7EB; border:none; border-radius:var(--radius-sm); padding:6px 14px; font-size:12px; font-family:'DM Sans',sans-serif; cursor:pointer; transition:background 0.2s; }
-  .btn:hover { background:#0a3560; }
+  .header { background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 100%); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.25rem 1.75rem; display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 12px; position: relative; overflow: hidden; }
+  .header::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--blue), var(--cyan), var(--purple)); }
+  .header-left { display: flex; align-items: center; gap: 14px; }
+  .header-icon { width: 44px; height: 44px; background: var(--blue-pale); border: 1px solid var(--blue); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .header-icon svg { width: 22px; height: 22px; stroke: var(--blue-bright); fill: none; stroke-width: 1.8; }
+  .header-title { color: var(--white); font-size: 18px; font-weight: 700; letter-spacing: -0.02em; }
+  .header-sub { color: var(--white-dim); font-size: 11px; margin-top: 3px; }
+  .header-right { display: flex; align-items: center; gap: 10px; }
+  .badge-live { background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.3); color: var(--green); font-size: 11px; font-weight: 500; padding: 5px 12px; border-radius: 20px; display: flex; align-items: center; gap: 6px; }
+  .dot-live { width: 7px; height: 7px; background: var(--green); border-radius: 50%; animation: pulse 2s infinite; box-shadow: 0 0 6px var(--green); }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.8)} }
+  .btn { background: var(--blue-pale); border: 1px solid var(--blue); color: var(--blue-bright); border-radius: var(--radius-sm); padding: 6px 14px; font-size: 12px; font-family: 'Inter', sans-serif; cursor: pointer; transition: all 0.2s; font-weight: 500; }
+  .btn:hover { background: var(--blue); color: var(--white); box-shadow: 0 0 12px rgba(59,130,246,0.4); }
 
   /* ESTADOS */
-  #loading { text-align:center; padding:4rem; color:var(--gray-400); font-size:14px; }
-  #error-box { text-align:center; padding:3rem; color:var(--red); display:none; background:var(--red-pale); border-radius:var(--radius-lg); margin-bottom:1rem; }
-  .spinner { width:36px; height:36px; border:3px solid var(--blue-pale); border-top-color:var(--blue-main); border-radius:50%; animation:spin 0.8s linear infinite; margin:0 auto 1rem; }
-  @keyframes spin { to { transform:rotate(360deg); } }
-  #main { display:none; }
+  #loading { text-align: center; padding: 4rem; color: var(--white-dim); font-size: 14px; }
+  #error-box { text-align: center; padding: 3rem; color: var(--red); display: none; background: var(--red-pale); border: 1px solid var(--red); border-radius: var(--radius-lg); margin-bottom: 1rem; }
+  .spinner { width: 36px; height: 36px; border: 2px solid var(--border); border-top-color: var(--blue); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 1rem; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  #main { display: none; }
 
-  /* ALERTA MÉDICA */
-  .alerta-medica { background:linear-gradient(135deg,#FCEBEB 0%,#fff5f5 100%); border:1.5px solid var(--red-light); border-radius:var(--radius-lg); padding:1rem 1.25rem; margin-bottom:1rem; display:none; }
-  .alerta-medica-header { display:flex; align-items:center; gap:10px; margin-bottom:10px; }
-  .alerta-icon { width:32px; height:32px; background:var(--red-pale); border-radius:var(--radius-sm); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-  .alerta-icon svg { width:16px; height:16px; stroke:var(--red); fill:none; stroke-width:2; }
-  .alerta-titulo { font-size:13px; font-weight:600; color:var(--red); }
-  .alerta-subtitulo { font-size:11px; color:#c45c5c; margin-top:1px; }
-
-  /* GRID MÉDICO */
-  .medico-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:10px; }
-  .medico-card { background:var(--white); border:1px solid #f0c5c5; border-radius:var(--radius-md); padding:.85rem 1rem; display:flex; flex-direction:column; gap:8px; }
-  .medico-card-top { display:flex; align-items:flex-start; justify-content:space-between; gap:8px; }
-  .medico-nombre { font-size:13px; font-weight:500; color:var(--gray-900); line-height:1.4; flex:1; }
-  .medico-lista { font-size:10px; color:var(--gray-400); margin-top:2px; }
-  .medico-obs { font-size:11px; color:var(--gray-700); background:#FFF8F8; border:1px solid #f5d5d5; border-radius:var(--radius-sm); padding:6px 8px; line-height:1.5; min-height:32px; }
-  .medico-obs-label { font-size:10px; font-weight:500; color:var(--red); text-transform:uppercase; letter-spacing:0.04em; margin-bottom:3px; }
-  .medico-footer { display:flex; align-items:center; justify-content:space-between; }
-  .medico-pct { font-size:10px; color:var(--gray-400); }
-  .prog-wrap { height:4px; background:var(--gray-200); border-radius:3px; margin-top:4px; }
-  .prog-fill { height:4px; border-radius:3px; }
+  /* UPDATE INFO */
+  .update-info { background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.2); color: var(--green); font-size: 11px; padding: 6px 14px; border-radius: var(--radius-sm); margin-bottom: 1.25rem; text-align: center; }
 
   /* MÉTRICAS */
-  .metrics-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(130px,1fr)); gap:12px; margin-bottom:1.5rem; }
-  .metric-card { background:var(--white); border-radius:var(--radius-md); padding:1rem 1.1rem; border:1px solid var(--gray-200); }
-  .metric-label { font-size:11px; font-weight:500; color:var(--gray-400); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:6px; }
-  .metric-val { font-size:30px; font-weight:600; line-height:1; margin-bottom:4px; }
-  .metric-hint { font-size:11px; color:var(--gray-400); }
-  .metric-medico { background:var(--red-pale); border:1px solid #f5d5d5; }
-  .metric-medico .metric-label { color:#c45c5c; }
-  .metric-medico .metric-hint { color:#c45c5c; }
+  .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 1.25rem; }
+  .metric-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1rem 1.1rem; position: relative; overflow: hidden; transition: border-color 0.2s; }
+  .metric-card:hover { border-color: var(--border-glow); }
+  .metric-card::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; border-radius: 0 0 var(--radius-md) var(--radius-md); }
+  .metric-card.mc-blue::after { background: var(--blue); }
+  .metric-card.mc-green::after { background: var(--green); }
+  .metric-card.mc-amber::after { background: var(--amber); }
+  .metric-card.mc-red::after { background: var(--red); }
+  .metric-card.mc-cyan::after { background: var(--cyan); }
+  .metric-card.mc-purple::after { background: var(--purple); }
+  .metric-label { font-size: 10px; font-weight: 600; color: var(--white-dim); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
+  .metric-val { font-size: 32px; font-weight: 700; line-height: 1; margin-bottom: 4px; letter-spacing: -0.02em; }
+  .metric-hint { font-size: 11px; color: var(--white-dim); }
+  .mc-blue .metric-val { color: var(--blue-bright); }
+  .mc-green .metric-val { color: var(--green); }
+  .mc-amber .metric-val { color: var(--amber); }
+  .mc-red .metric-val { color: var(--red-bright); }
+  .mc-cyan .metric-val { color: var(--cyan); }
+  .mc-purple .metric-val { color: var(--purple); }
 
-  /* CHARTS */
-  .charts-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:1.5rem; }
-  .card { background:var(--white); border-radius:var(--radius-lg); border:1px solid var(--gray-200); padding:1.1rem 1.25rem; }
-  .card-title { font-size:11px; font-weight:500; color:var(--gray-400); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:12px; }
-  .legend { display:flex; flex-wrap:wrap; gap:10px; margin-bottom:10px; }
-  .legend-item { display:flex; align-items:center; gap:5px; font-size:11px; color:var(--gray-400); }
-  .legend-dot { width:10px; height:10px; border-radius:2px; }
-  .chart-wrap { position:relative; height:170px; }
+  /* BLOQUE MÉDICO */
+  .medico-section { background: linear-gradient(135deg, rgba(239,68,68,0.08) 0%, rgba(139,92,246,0.05) 100%); border: 1px solid rgba(239,68,68,0.3); border-radius: var(--radius-lg); padding: 1.1rem 1.25rem; margin-bottom: 1.25rem; display: none; }
+  .medico-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+  .medico-icon { width: 30px; height: 30px; background: var(--red-pale); border: 1px solid var(--red); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .medico-icon svg { width: 15px; height: 15px; stroke: var(--red-bright); fill: none; stroke-width: 2; }
+  .medico-titulo { font-size: 13px; font-weight: 600; color: var(--red-bright); }
+  .medico-sub { font-size: 11px; color: rgba(239,68,68,0.6); margin-top: 1px; }
+  .medico-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; }
+  .medico-card { background: rgba(10,14,26,0.6); border: 1px solid rgba(239,68,68,0.2); border-radius: var(--radius-md); padding: .85rem 1rem; display: flex; flex-direction: column; gap: 8px; }
+  .medico-nombre { font-size: 13px; font-weight: 500; color: var(--white); line-height: 1.4; }
+  .medico-lista { font-size: 10px; color: var(--white-dim); margin-top: 1px; }
+  .medico-obs-label { font-size: 10px; font-weight: 600; color: rgba(239,68,68,0.7); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 3px; }
+  .medico-obs { font-size: 11px; color: var(--gray-light); background: rgba(239,68,68,0.05); border: 1px solid rgba(239,68,68,0.15); border-radius: var(--radius-sm); padding: 6px 8px; line-height: 1.5; min-height: 30px; font-style: italic; }
+  .medico-footer { display: flex; align-items: center; justify-content: space-between; }
+  .medico-pct { font-size: 10px; color: var(--white-dim); }
 
-  /* TABLA */
-  .table-card { background:var(--white); border-radius:var(--radius-lg); border:1px solid var(--gray-200); padding:1.1rem 1.25rem; margin-bottom:1.5rem; overflow-x:auto; }
-  .table-header { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:14px; flex-wrap:wrap; gap:8px; }
-  .table-hint { font-size:11px; color:var(--gray-400); margin-top:4px; }
-  table { width:100%; border-collapse:collapse; font-size:12px; min-width:600px; }
-  thead tr { border-bottom:1px solid var(--gray-200); }
-  th { padding:8px; text-align:left; font-size:11px; font-weight:500; color:var(--gray-400); text-transform:uppercase; letter-spacing:0.05em; white-space:nowrap; }
-  th.center, td.center { text-align:center; }
-  td { padding:10px 8px; border-bottom:1px solid #F4F6F9; color:var(--gray-700); vertical-align:middle; }
-  tr:last-child td { border-bottom:none; }
-  tr:hover td { background:#FAFBFD; }
-  .chk-yes { color:var(--green); font-size:16px; font-weight:600; }
-  .chk-no { color:#D3D1C7; font-size:13px; }
+  /* CHART */
+  .chart-section { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.1rem 1.25rem; margin-bottom: 1.25rem; }
+  .chart-wrap { position: relative; height: 160px; }
+  .section-label { font-size: 10px; font-weight: 600; color: var(--white-dim); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+  .section-label::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .legend { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 10px; }
+  .legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--white-dim); }
+  .legend-dot { width: 8px; height: 8px; border-radius: 2px; }
+
+  /* TABLAS */
+  .list-section { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.1rem 1.25rem; margin-bottom: 1.25rem; overflow-x: auto; }
+  .list-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+  .list-title { font-size: 13px; font-weight: 600; color: var(--white); display: flex; align-items: center; gap: 8px; }
+  .list-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .list-count { font-size: 11px; color: var(--white-dim); background: var(--bg-base); border: 1px solid var(--border); padding: 2px 8px; border-radius: 20px; }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; min-width: 500px; }
+  thead tr { border-bottom: 1px solid var(--border); }
+  th { padding: 8px; text-align: left; font-size: 10px; font-weight: 600; color: var(--white-dim); text-transform: uppercase; letter-spacing: 0.07em; white-space: nowrap; }
+  th.center, td.center { text-align: center; }
+  td { padding: 10px 8px; border-bottom: 1px solid rgba(30,45,69,0.5); color: var(--gray-light); vertical-align: middle; }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: rgba(59,130,246,0.04); }
+  .chk-yes { color: var(--green); font-size: 15px; font-weight: 700; text-shadow: 0 0 8px rgba(16,185,129,0.5); }
+  .chk-no { color: var(--gray); font-size: 12px; }
 
   /* BADGES */
-  .badge { display:inline-block; font-size:10px; font-weight:600; padding:3px 8px; border-radius:20px; white-space:nowrap; }
-  .badge-ok { background:var(--green-pale); color:var(--green-dark); }
-  .badge-warn { background:var(--amber-pale); color:var(--amber); }
-  .badge-danger { background:var(--red-pale); color:var(--red); }
-  .badge-info { background:var(--blue-pale); color:var(--blue-main); }
-  .badge-urgent { background:#FCEBEB; color:#A32D2D; border:1px solid #F09595; }
-  .badge-medico { background:var(--red-pale); color:var(--red); border:1px solid var(--red-light); font-size:9px; padding:2px 6px; border-radius:4px; margin-left:4px; vertical-align:middle; }
+  .badge { display: inline-block; font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 20px; white-space: nowrap; }
+  .badge-ok { background: rgba(16,185,129,0.15); color: var(--green); border: 1px solid rgba(16,185,129,0.3); }
+  .badge-warn { background: rgba(245,158,11,0.15); color: var(--amber); border: 1px solid rgba(245,158,11,0.3); }
+  .badge-danger { background: rgba(239,68,68,0.15); color: var(--red-bright); border: 1px solid rgba(239,68,68,0.3); }
+  .badge-info { background: rgba(59,130,246,0.15); color: var(--blue-bright); border: 1px solid rgba(59,130,246,0.3); }
+  .badge-neutral { background: rgba(75,85,99,0.3); color: var(--gray-light); border: 1px solid var(--gray); }
+  .badge-cyan { background: rgba(6,182,212,0.15); color: var(--cyan); border: 1px solid rgba(6,182,212,0.3); }
 
-  /* TABS */
-  .tabs { display:flex; gap:6px; flex-wrap:wrap; }
-  .tab-btn { background:var(--white); border:1px solid var(--gray-200); border-radius:var(--radius-sm); padding:5px 14px; font-size:12px; font-family:'DM Sans',sans-serif; color:var(--gray-400); cursor:pointer; transition:all 0.15s; }
-  .tab-btn.active { background:var(--blue-pale); color:var(--blue-main); border-color:var(--blue-light); font-weight:500; }
+  /* PROGRESS */
+  .prog-wrap { height: 4px; background: var(--border); border-radius: 3px; margin-top: 5px; }
+  .prog-fill { height: 4px; border-radius: 3px; }
 
-  /* MISC */
-  .footer { text-align:center; font-size:11px; color:var(--gray-400); padding-top:1rem; }
-  .update-info { background:var(--green-pale); color:var(--green-dark); font-size:11px; padding:6px 12px; border-radius:var(--radius-sm); margin-bottom:1rem; text-align:center; }
-  .section-title { font-size:12px; font-weight:600; color:var(--gray-700); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:10px; display:flex; align-items:center; gap:8px; }
-  .section-title-line { flex:1; height:1px; background:var(--gray-200); }
+  /* OBS CELL */
+  .obs-cell { font-size: 11px; color: var(--white-dim); font-style: italic; max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
-  @media (max-width:600px) { body{padding:1rem;} .charts-row{grid-template-columns:1fr;} }
+  /* FOOTER */
+  .footer { text-align: center; font-size: 11px; color: var(--white-dim); padding-top: 1rem; opacity: 0.5; }
+
+  @media (max-width: 600px) { body { padding: 1rem; } .metrics-grid { grid-template-columns: repeat(2, 1fr); } }
 </style>
 </head>
 <body>
@@ -127,18 +156,18 @@
       <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
     </div>
     <div>
-      <div class="header-title">Panel de trámites operativos</div>
+      <div class="header-title">Panel Operativo</div>
       <div class="header-sub" id="header-sub">Cargando datos...</div>
     </div>
   </div>
   <div class="header-right">
-    <div class="badge-live"><div class="dot-live"></div> Datos de Trello</div>
-    <button class="btn" onclick="cargarDatos()">Actualizar</button>
+    <div class="badge-live"><div class="dot-live"></div> En vivo · Trello</div>
+    <button class="btn" onclick="cargarDatos()">⟳ Actualizar</button>
   </div>
 </div>
 
 <div id="error-box"><p id="error-msg"></p></div>
-<div id="loading"><div class="spinner"></div>Cargando datos desde Google Drive...</div>
+<div id="loading"><div class="spinner"></div>Conectando con Trello...</div>
 <div id="main"></div>
 
 <script>
@@ -146,36 +175,45 @@ const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxijGk1dDAHg9aC
 
 const LISTAS_EXCLUIDAS = ['colores de representación', 'referidos'];
 
-let chartDonut = null, chartBar = null, activeTab = 'tramite', datosGlobales = null;
+const LISTAS_CONFIG = {
+  tramites:   { match: t => t.lista.toUpperCase().includes('TRAMITES OPERATIVOS'), color: '#3b82f6', label: 'Trámites Operativos Chava', tieneChecklist: true },
+  cierresMay: { match: t => t.lista.toUpperCase().includes('CIERRES') && t.lista.includes('05'), color: '#06b6d4', label: 'Cierres Mayo 2026', tieneChecklist: true },
+  cierresJun: { match: t => t.lista.toUpperCase().includes('CIERRES') && t.lista.includes('06'), color: '#8b5cf6', label: 'Cierres Junio 2026', tieneChecklist: true },
+  cobranza:   { match: t => t.lista.toUpperCase().includes('COBRANZA'), color: '#f59e0b', label: 'Cobranza Fer', tieneChecklist: false },
+  atencion:   { match: t => t.lista.toUpperCase().includes('ATENCI'), color: '#10b981', label: 'Atención al Cliente', tieneChecklist: false },
+  prospectos: { match: t => t.lista.toUpperCase().includes('PROSPECTO'), color: '#f97316', label: 'Prospectos de Cierre', tieneChecklist: false },
+};
 
-function normLista(str) {
-  return (str||'').toLowerCase().trim();
+let chartDonut = null, datosGlobales = null;
+
+function norm(str) {
+  return (str||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
 }
 
-function esMedico(tarjeta) {
-  return (tarjeta.labels||[]).some(l => {
-    const n = (l.name||'').toLowerCase();
+function esMedico(t) {
+  return (t.labels||[]).some(l => {
+    const n = norm(l.name||'');
     const c = (l.color||'').toLowerCase();
-    return n.includes('medico') || n.includes('médico') || c === 'red';
+    return n.includes('medico') || c === 'red';
   });
 }
 
 function cargarDatos() {
   show('loading'); hide('main');
   document.getElementById('error-box').style.display = 'none';
-  const callbackName = 'dashboardCallback_' + Date.now();
+  const callbackName = 'cb_' + Date.now();
   const script = document.createElement('script');
   const timeout = setTimeout(() => {
     document.getElementById('error-box').style.display = 'block';
-    document.getElementById('error-msg').textContent = 'Error: No se pudo conectar con el servidor.';
+    document.getElementById('error-msg').textContent = 'Error: No se pudo conectar.';
     hide('loading');
     delete window[callbackName];
-    document.body.removeChild(script);
-  }, 10000);
+    if (document.body.contains(script)) document.body.removeChild(script);
+  }, 12000);
   window[callbackName] = function(data) {
     clearTimeout(timeout);
     delete window[callbackName];
-    document.body.removeChild(script);
+    if (document.body.contains(script)) document.body.removeChild(script);
     if (data.error) {
       document.getElementById('error-box').style.display = 'block';
       document.getElementById('error-msg').textContent = 'Error: ' + data.error;
@@ -184,324 +222,278 @@ function cargarDatos() {
     datosGlobales = data;
     renderDashboard(data);
   };
-script.src = APPS_SCRIPT_URL + '?key=deltoro2026&callback=' + callbackName + '&t=' + Date.now();  script.onerror = function() {
+  script.src = APPS_SCRIPT_URL + '?key=deltoro2026&callback=' + callbackName + '&t=' + Date.now();
+  script.onerror = function() {
     clearTimeout(timeout);
     document.getElementById('error-box').style.display = 'block';
-    document.getElementById('error-msg').textContent = 'Error: No se pudo cargar el script.';
+    document.getElementById('error-msg').textContent = 'Error al cargar script.';
     hide('loading');
   };
   document.body.appendChild(script);
 }
 
 function renderDashboard(data) {
-  const { stats, tarjetas, listas, actualizadoEn } = data;
+  const { tarjetas, actualizadoEn } = data;
 
-  // Filtrar listas excluidas
-  const tarjetasFiltradas = tarjetas.filter(t =>
-    !LISTAS_EXCLUIDAS.includes(normLista(t.lista))
-  );
+  const tf = tarjetas.filter(t => !LISTAS_EXCLUIDAS.includes(norm(t.lista)));
+  const medicas = tf.filter(t => esMedico(t));
+  const normales = tf.filter(t => !esMedico(t));
 
-  const tarjetasMedicas = tarjetasFiltradas.filter(t => esMedico(t));
-  const tarjetasNormales = tarjetasFiltradas.filter(t => !esMedico(t));
-
-  const fechaActualizado = new Date(actualizadoEn).toLocaleString('es-MX', {
+  const fecha = new Date(actualizadoEn).toLocaleString('es-MX', {
     day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit'
   });
-  document.getElementById('header-sub').textContent = `Actualizado: ${fechaActualizado}`;
+  document.getElementById('header-sub').textContent = `Actualizado: ${fecha}`;
 
-  const statsRecalc = {
-    total: tarjetasFiltradas.length,
-    concluidos: tarjetasFiltradas.filter(t => t.pct === 100).length,
-    enProceso: tarjetasFiltradas.filter(t => t.pct > 0 && t.pct < 100).length,
-    sinIniciar: tarjetasFiltradas.filter(t => t.pct === 0).length,
-    firmaUrgente: tarjetasFiltradas.filter(t => t.urgente).length,
-    vencenProximos: tarjetasFiltradas.filter(t => {
+  const stats = {
+    enProceso:    normales.filter(t => t.pct > 0 && t.pct < 100).length,
+    concluidos:   normales.filter(t => t.pct === 100).length,
+    sinIniciar:   normales.filter(t => t.pct === 0).length,
+    firmaUrgente: normales.filter(t => t.urgente).length,
+    medicos:      medicas.length,
+    vencen:       normales.filter(t => {
       if (!t.vencimiento || t.pct === 100) return false;
-      return new Date(t.vencimiento) < new Date(Date.now() + 3 * 86400000);
-    }).length,
-    medicos: tarjetasMedicas.length
+      return new Date(t.vencimiento) < new Date(Date.now() + 3*86400000);
+    }).length
   };
 
   const main = document.getElementById('main');
   main.innerHTML = `
-    <div class="update-info">Datos sincronizados desde Trello el ${fechaActualizado} · N8N actualiza cada 30 minutos</div>
-
+    <div class="update-info">⚡ Sincronizado el ${fecha} · N8N actualiza cada 30 min</div>
     <div class="metrics-grid" id="metrics-grid"></div>
-
     <div id="bloque-medico"></div>
-
-    <div class="charts-row">
-      <div class="card">
-        <div class="card-title">Estatus general</div>
-        <div class="legend" id="legend-donut"></div>
-        <div class="chart-wrap"><canvas id="chartDonut"></canvas></div>
-      </div>
-      <div class="card">
-        <div class="card-title">Avance por lista</div>
-        <div class="legend" id="legend-bar"></div>
-        <div class="chart-wrap"><canvas id="chartBar"></canvas></div>
-      </div>
+    <div class="chart-section">
+      <div class="section-label">Distribución general</div>
+      <div class="legend" id="legend-donut"></div>
+      <div class="chart-wrap"><canvas id="chartDonut"></canvas></div>
     </div>
-
-    <div class="table-card">
-      <div class="table-header">
-        <div>
-          <div class="card-title" style="margin:0 0 8px;">Seguimiento por tarjeta</div>
-          <div class="tabs" id="tabs"></div>
-        </div>
-        <span class="table-hint" id="table-hint"></span>
-      </div>
-      <div id="table-container"></div>
-    </div>
-
-    <div class="footer">Dashboard generado automáticamente · N8N + Trello + Google Drive</div>
+    <div id="tablas-listas"></div>
+    <div class="footer">Panel generado automáticamente · N8N + Trello + Google Drive</div>
   `;
 
-  renderMetrics(statsRecalc);
-  renderBloquesMedicos(tarjetasMedicas);
-  renderCharts(tarjetasFiltradas, listas);
-  renderTabs(tarjetasNormales);
-  renderTabla(tarjetasNormales, activeTab);
-
+  renderMetrics(stats);
+  renderMedicos(medicas);
+  renderDonut(normales);
+  renderTablas(normales);
   hide('loading'); show('main');
 }
 
-function renderMetrics(stats) {
-  const pctConcluidos = stats.total ? Math.round(stats.concluidos / stats.total * 100) : 0;
-  const pctEnProceso = stats.total ? Math.round(stats.enProceso / stats.total * 100) : 0;
+function renderMetrics(s) {
   document.getElementById('metrics-grid').innerHTML = `
-    <div class="metric-card">
-      <div class="metric-label">Total tarjetas</div>
-      <div class="metric-val" style="color:var(--blue-main)">${stats.total}</div>
-      <div class="metric-hint">Este tablero</div>
-    </div>
-    <div class="metric-card">
+    <div class="metric-card mc-green">
       <div class="metric-label">Concluidos</div>
-      <div class="metric-val" style="color:var(--green)">${stats.concluidos}</div>
-      <div class="metric-hint">${pctConcluidos}% del total</div>
+      <div class="metric-val">${s.concluidos}</div>
+      <div class="metric-hint">Completados al 100%</div>
     </div>
-    <div class="metric-card">
+    <div class="metric-card mc-blue">
       <div class="metric-label">En proceso</div>
-      <div class="metric-val" style="color:var(--amber)">${stats.enProceso}</div>
-      <div class="metric-hint">${pctEnProceso}% del total</div>
+      <div class="metric-val">${s.enProceso}</div>
+      <div class="metric-hint">Avance parcial</div>
     </div>
-    <div class="metric-card">
-      <div class="metric-label">Firma Sofía urgente</div>
-      <div class="metric-val" style="color:var(--red)">${stats.firmaUrgente}</div>
+    <div class="metric-card mc-amber">
+      <div class="metric-label">Sin iniciar</div>
+      <div class="metric-val">${s.sinIniciar}</div>
+      <div class="metric-hint">0% de avance</div>
+    </div>
+    <div class="metric-card mc-cyan">
+      <div class="metric-label">Pendiente firma Sofía</div>
+      <div class="metric-val">${s.firmaUrgente}</div>
       <div class="metric-hint">Cliente ya firmó</div>
     </div>
-    <div class="metric-card">
+    <div class="metric-card mc-amber">
       <div class="metric-label">Vencen pronto</div>
-      <div class="metric-val" style="color:var(--amber)">${stats.vencenProximos}</div>
+      <div class="metric-val">${s.vencen}</div>
       <div class="metric-hint">Próximos 3 días</div>
     </div>
-    <div class="metric-card metric-medico">
+    ${s.medicos > 0 ? `
+    <div class="metric-card mc-red">
       <div class="metric-label">Trámites médicos</div>
-      <div class="metric-val" style="color:var(--red)">${stats.medicos}</div>
-      <div class="metric-hint">Etiqueta roja</div>
-    </div>
+      <div class="metric-val">${s.medicos}</div>
+      <div class="metric-hint">Requieren atención</div>
+    </div>` : ''}
   `;
 }
 
-function renderBloquesMedicos(tarjetasMedicas) {
+function renderMedicos(medicas) {
   const bloque = document.getElementById('bloque-medico');
-  if (!tarjetasMedicas.length) { bloque.style.display = 'none'; return; }
+  if (!medicas.length) return;
 
-  const progColor = p => p === 100 ? '#1D9E75' : p >= 60 ? '#378ADD' : '#E24B4A';
+  const progColor = p => p === 100 ? '#10b981' : p >= 60 ? '#3b82f6' : '#ef4444';
   const getSemaforo = t => {
     if (t.pct === 100) return '<span class="badge badge-ok">Concluido</span>';
     if (t.urgente) return '<span class="badge badge-danger">Firma Sofía</span>';
-    if (t.pct >= 60) return '<span class="badge badge-warn">En proceso</span>';
+    if (t.pct >= 50) return '<span class="badge badge-warn">En proceso</span>';
     if (t.pct > 0) return '<span class="badge badge-info">Iniciado</span>';
-    return '<span class="badge" style="background:var(--gray-100);color:var(--gray-400)">Sin iniciar</span>';
+    return '<span class="badge badge-neutral">Sin iniciar</span>';
   };
 
-  const cards = tarjetasMedicas.map(t => `
-    <div class="medico-card">
-      <div class="medico-card-top">
-        <div>
-          <div class="medico-nombre">${t.nombre}</div>
-          <div class="medico-lista">${t.lista}</div>
-        </div>
-        ${getSemaforo(t)}
-      </div>
-      <div>
-        <div class="medico-obs-label">Observaciones</div>
-        <div class="medico-obs">${t.desc ? t.desc.substring(0,120) + (t.desc.length > 120 ? '…' : '') : '<span style="color:var(--gray-400);font-style:italic">Sin observaciones</span>'}</div>
-      </div>
-      <div class="medico-footer">
-        <span class="medico-pct">${t.pct}% completado</span>
-      </div>
-      <div class="prog-wrap"><div class="prog-fill" style="width:${t.pct}%;background:${progColor(t.pct)}"></div></div>
-    </div>
-  `).join('');
-
   bloque.innerHTML = `
-    <div class="alerta-medica" style="display:block">
-      <div class="alerta-medica-header">
-        <div class="alerta-icon">
+    <div class="medico-section" style="display:block">
+      <div class="medico-header">
+        <div class="medico-icon">
           <svg viewBox="0 0 24 24"><path d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
         </div>
         <div>
-          <div class="alerta-titulo">Trámites médicos activos — ${tarjetasMedicas.length} tarjeta${tarjetasMedicas.length > 1 ? 's' : ''}</div>
-          <div class="alerta-subtitulo">Requieren atención especial · Etiqueta roja en Trello</div>
+          <div class="medico-titulo">Trámites médicos en proceso — ${medicas.length} tarjeta${medicas.length>1?'s':''}</div>
+          <div class="medico-sub">Requieren atención especial</div>
         </div>
       </div>
-      <div class="medico-grid">${cards}</div>
+      <div class="medico-grid">
+        ${medicas.map(t => `
+          <div class="medico-card">
+            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px">
+              <div>
+                <div class="medico-nombre">${t.nombre}</div>
+                <div class="medico-lista">${t.lista}</div>
+              </div>
+              ${getSemaforo(t)}
+            </div>
+            <div>
+              <div class="medico-obs-label">Observaciones</div>
+              <div class="medico-obs">${t.desc ? t.desc.substring(0,120)+(t.desc.length>120?'…':'') : 'Sin observaciones registradas'}</div>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between">
+              <span style="font-size:10px;color:var(--white-dim)">${t.pct}% completado</span>
+            </div>
+            <div class="prog-wrap"><div class="prog-fill" style="width:${t.pct}%;background:${progColor(t.pct)}"></div></div>
+          </div>
+        `).join('')}
+      </div>
     </div>
   `;
 }
 
-function renderCharts(tarjetas, listas) {
+function renderDonut(tarjetas) {
   const concluido  = tarjetas.filter(t => t.pct === 100).length;
   const enProceso  = tarjetas.filter(t => t.pct > 0 && t.pct < 100).length;
   const sinIniciar = tarjetas.filter(t => t.pct === 0).length;
 
   document.getElementById('legend-donut').innerHTML = `
-    <span class="legend-item"><span class="legend-dot" style="background:#1D9E75"></span>Concluido (${concluido})</span>
-    <span class="legend-item"><span class="legend-dot" style="background:#378ADD"></span>En proceso (${enProceso})</span>
-    <span class="legend-item"><span class="legend-dot" style="background:#D3D1C7"></span>Sin iniciar (${sinIniciar})</span>
+    <span class="legend-item"><span class="legend-dot" style="background:#10b981"></span>Concluido (${concluido})</span>
+    <span class="legend-item"><span class="legend-dot" style="background:#3b82f6"></span>En proceso (${enProceso})</span>
+    <span class="legend-item"><span class="legend-dot" style="background:#374151"></span>Sin iniciar (${sinIniciar})</span>
   `;
 
   if (chartDonut) chartDonut.destroy();
   chartDonut = new Chart(document.getElementById('chartDonut'), {
     type: 'doughnut',
-    data: { labels:['Concluido','En proceso','Sin iniciar'], datasets:[{ data:[concluido,enProceso,sinIniciar], backgroundColor:['#1D9E75','#378ADD','#D3D1C7'], borderWidth:0 }] },
-    options: { responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}}, cutout:'68%' }
-  });
-
-  const listasValidas = [...new Set(tarjetas.map(t => t.lista))]
-    .filter(l => !LISTAS_EXCLUIDAS.includes(normLista(l)))
-    .slice(0, 6);
-
-  const listaAvg = listasValidas.map(nombre => {
-    const cards = tarjetas.filter(t => t.lista === nombre);
-    return cards.length ? Math.round(cards.reduce((s,c) => s + c.pct, 0) / cards.length) : 0;
-  });
-
-  document.getElementById('legend-bar').innerHTML = `
-    <span class="legend-item"><span class="legend-dot" style="background:#185FA5"></span>Avance promedio %</span>
-  `;
-
-  if (chartBar) chartBar.destroy();
-  chartBar = new Chart(document.getElementById('chartBar'), {
-    type: 'bar',
-    data: { labels:listasValidas, datasets:[{ data:listaAvg, backgroundColor:'#378ADD', borderWidth:0, borderRadius:5 }] },
+    data: {
+      labels: ['Concluido','En proceso','Sin iniciar'],
+      datasets: [{ data:[concluido,enProceso,sinIniciar], backgroundColor:['#10b981','#3b82f6','#374151'], borderWidth:0, hoverOffset:4 }]
+    },
     options: {
-      responsive:true, maintainAspectRatio:false,
-      plugins:{legend:{display:false}},
-      scales:{
-        x:{grid:{display:false},ticks:{font:{size:10},maxRotation:30}},
-        y:{max:100,grid:{color:'rgba(0,0,0,0.04)'},ticks:{callback:v=>v+'%',font:{size:10}}}
-      }
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend:{ display:false }, tooltip:{ backgroundColor:'#1e2d45', titleColor:'#f1f5f9', bodyColor:'#9ca3af', borderColor:'#1e2d45', borderWidth:1 } },
+      cutout: '70%'
     }
   });
 }
 
-function renderTabs(tarjetas) {
-  const tipos = [...new Set(tarjetas.map(c => c.tipo))];
-  const labels = { tramite:'Trámites OV2', cierre:'Cierres', otro:'Otros' };
-  document.getElementById('tabs').innerHTML = tipos.map(t =>
-    `<button class="tab-btn${t===activeTab?' active':''}" onclick="switchTab('${t}')">${labels[t]||t} (${tarjetas.filter(c=>c.tipo===t).length})</button>`
-  ).join('');
-}
+function renderTablas(tarjetas) {
+  const contenedor = document.getElementById('tablas-listas');
+  contenedor.innerHTML = '';
 
-function switchTab(tab) {
-  activeTab = tab;
-  document.querySelectorAll('.tab-btn').forEach(b => {
-    const labels = { tramite:'Trámites OV2', cierre:'Cierres', otro:'Otros' };
-    b.classList.toggle('active', b.textContent.startsWith(labels[tab]||tab));
+  Object.entries(LISTAS_CONFIG).forEach(([key, cfg]) => {
+    const cards = tarjetas.filter(t => cfg.match(t));
+    if (!cards.length) return;
+
+    const chk = v => v ? '<span class="chk-yes">✓</span>' : '<span class="chk-no">—</span>';
+    const progColor = p => p === 100 ? '#10b981' : p >= 60 ? '#3b82f6' : '#f59e0b';
+
+    const getBadge = t => {
+      if (t.pct === 100) return '<span class="badge badge-ok">Concluido</span>';
+      if (t.urgente) return '<span class="badge badge-danger">Firma Sofía</span>';
+      if (t.checks?.enviado && !t.checks?.firmaCliente) return '<span class="badge badge-warn">Espera firma</span>';
+      if (t.pct > 0) return '<span class="badge badge-info">En proceso</span>';
+      return '<span class="badge badge-neutral">Sin iniciar</span>';
+    };
+
+    const getBadgeSimple = t => {
+      if (t.pct === 100) return '<span class="badge badge-ok">Completada</span>';
+      return '<span class="badge badge-neutral">No completada</span>';
+    };
+
+    let thead = '', tbody = '';
+
+    if (cfg.tieneChecklist && key === 'tramites') {
+      thead = `<tr>
+        <th style="width:30%">Tarjeta</th>
+        <th class="center">Llenado</th>
+        <th class="center">Enviado</th>
+        <th class="center">F. Cliente</th>
+        <th class="center">F. Sofía</th>
+        <th class="center">Portal</th>
+        <th class="center">Estatus</th>
+        <th style="width:10%">Avance</th>
+      </tr>`;
+      tbody = cards.map(t => `<tr>
+        <td style="font-weight:500;color:var(--white)">${t.nombre}</td>
+        <td class="center">${chk(t.checks?.llenado)}</td>
+        <td class="center">${chk(t.checks?.enviado)}</td>
+        <td class="center">${chk(t.checks?.firmaCliente)}</td>
+        <td class="center">${chk(t.checks?.firmasofi)}</td>
+        <td class="center">${chk(t.checks?.portal)}</td>
+        <td class="center">${getBadge(t)}</td>
+        <td>
+          <span style="font-size:10px;color:var(--white-dim)">${t.pct}%</span>
+          <div class="prog-wrap"><div class="prog-fill" style="width:${t.pct}%;background:${progColor(t.pct)}"></div></div>
+        </td>
+      </tr>`).join('');
+
+    } else if (cfg.tieneChecklist) {
+      thead = `<tr>
+        <th style="width:30%">Tarjeta</th>
+        <th class="center">Solicitud</th>
+        <th class="center">F. Cliente</th>
+        <th class="center">F. Sofía</th>
+        <th class="center">Autorizada</th>
+        <th class="center">Pagada</th>
+        <th class="center">Estatus</th>
+        <th style="width:10%">Avance</th>
+      </tr>`;
+      tbody = cards.map(t => `<tr>
+        <td style="font-weight:500;color:var(--white)">${t.nombre}</td>
+        <td class="center">${chk(t.checks?.solicitud)}</td>
+        <td class="center">${chk(t.checks?.firmaCliente)}</td>
+        <td class="center">${chk(t.checks?.firmasofi)}</td>
+        <td class="center">${chk(t.checks?.autorizada)}</td>
+        <td class="center">${chk(t.checks?.pagada)}</td>
+        <td class="center">${getBadge(t)}</td>
+        <td>
+          <span style="font-size:10px;color:var(--white-dim)">${t.pct}%</span>
+          <div class="prog-wrap"><div class="prog-fill" style="width:${t.pct}%;background:${progColor(t.pct)}"></div></div>
+        </td>
+      </tr>`).join('');
+
+    } else {
+      thead = `<tr>
+        <th style="width:35%">Tarjeta</th>
+        <th style="width:35%">Observaciones</th>
+        <th class="center">Estatus</th>
+      </tr>`;
+      tbody = cards.map(t => `<tr>
+        <td style="font-weight:500;color:var(--white)">${t.nombre}</td>
+        <td class="obs-cell" title="${t.desc||''}">${t.desc || '<span style="font-style:italic;color:var(--gray)">Sin observaciones</span>'}</td>
+        <td class="center">${getBadgeSimple(t)}</td>
+      </tr>`).join('');
+    }
+
+    const section = document.createElement('div');
+    section.className = 'list-section';
+    section.innerHTML = `
+      <div class="list-header">
+        <div class="list-title">
+          <span class="list-dot" style="background:${cfg.color};box-shadow:0 0 6px ${cfg.color}"></span>
+          ${cfg.label}
+        </div>
+        <span class="list-count">${cards.length} tarjeta${cards.length>1?'s':''}</span>
+      </div>
+      <table>
+        <thead>${thead}</thead>
+        <tbody>${tbody || '<tr><td colspan="8" style="text-align:center;color:var(--white-dim);padding:2rem;">Sin tarjetas</td></tr>'}</tbody>
+      </table>
+    `;
+    contenedor.appendChild(section);
   });
-  const tarjetasNormales = datosGlobales.tarjetas.filter(t =>
-    !LISTAS_EXCLUIDAS.includes(normLista(t.lista)) && !esMedico(t)
-  );
-  renderTabla(tarjetasNormales, tab);
-}
-
-function renderTabla(tarjetas, tipo) {
-  const filtered = tarjetas.filter(c => c.tipo === tipo);
-  document.getElementById('table-hint').textContent = `${filtered.length} tarjetas`;
-
-  const chk = v => v ? '<span class="chk-yes">&#10003;</span>' : '<span class="chk-no">&#8212;</span>';
-  const progColor = p => p === 100 ? '#1D9E75' : p >= 60 ? '#378ADD' : '#BA7517';
-
-  const getBadge = t => {
-    if (t.pct === 100) return '<span class="badge badge-ok">Concluido</span>';
-    if (t.etiquetaUrgente) return '<span class="badge badge-urgent">Urgente</span>';
-    if (t.urgente) return '<span class="badge badge-danger">Firma Sofía</span>';
-    if (t.checks && t.checks.enviado && !t.checks.firmaCliente) return '<span class="badge badge-warn">Espera firma</span>';
-    return '<span class="badge badge-info">En proceso</span>';
-  };
-
-  let thead = '', tbody = '';
-
-  if (tipo === 'tramite') {
-    thead = `<tr>
-      <th style="width:28%">Tarjeta</th>
-      <th style="width:13%">Lista</th>
-      <th class="center">Llenado</th>
-      <th class="center">Enviado</th>
-      <th class="center">F.Cliente</th>
-      <th class="center">F.Sofía</th>
-      <th class="center">Portal</th>
-      <th class="center">Estatus</th>
-      <th style="width:10%">Avance</th>
-    </tr>`;
-    tbody = filtered.map(t => `<tr>
-      <td style="font-weight:500;color:var(--gray-900)">${t.nombre}${esMedico(t)?'<span class="badge-medico">Médico</span>':''}</td>
-      <td style="font-size:11px;color:var(--gray-400)">${t.lista}</td>
-      <td class="center">${chk(t.checks?.llenado)}</td>
-      <td class="center">${chk(t.checks?.enviado)}</td>
-      <td class="center">${chk(t.checks?.firmaCliente)}</td>
-      <td class="center">${chk(t.checks?.firmasofi)}</td>
-      <td class="center">${chk(t.checks?.portal)}</td>
-      <td class="center">${getBadge(t)}</td>
-      <td><span style="font-size:10px;color:var(--gray-400)">${t.pct}%</span>
-        <div class="prog-wrap"><div class="prog-fill" style="width:${t.pct}%;background:${progColor(t.pct)}"></div></div>
-      </td>
-    </tr>`).join('');
-  } else if (tipo === 'cierre') {
-    thead = `<tr>
-      <th style="width:28%">Tarjeta</th>
-      <th style="width:13%">Lista</th>
-      <th class="center">Solicitud</th>
-      <th class="center">F.Cliente</th>
-      <th class="center">F.Sofía</th>
-      <th class="center">Autorizada</th>
-      <th class="center">Pagada</th>
-      <th class="center">Estatus</th>
-      <th style="width:10%">Avance</th>
-    </tr>`;
-    tbody = filtered.map(t => `<tr>
-      <td style="font-weight:500;color:var(--gray-900)">${t.nombre}</td>
-      <td style="font-size:11px;color:var(--gray-400)">${t.lista}</td>
-      <td class="center">${chk(t.checks?.solicitud)}</td>
-      <td class="center">${chk(t.checks?.firmaCliente)}</td>
-      <td class="center">${chk(t.checks?.firmasofi)}</td>
-      <td class="center">${chk(t.checks?.autorizada)}</td>
-      <td class="center">${chk(t.checks?.pagada)}</td>
-      <td class="center">${getBadge(t)}</td>
-      <td><span style="font-size:10px;color:var(--gray-400)">${t.pct}%</span>
-        <div class="prog-wrap"><div class="prog-fill" style="width:${t.pct}%;background:${progColor(t.pct)}"></div></div>
-      </td>
-    </tr>`).join('');
-  } else {
-    thead = `<tr><th style="width:40%">Tarjeta</th><th style="width:20%">Lista</th><th class="center">Estatus</th><th>Avance</th></tr>`;
-    tbody = filtered.map(t => `<tr>
-      <td style="font-weight:500">${t.nombre}</td>
-      <td style="font-size:11px;color:var(--gray-400)">${t.lista}</td>
-      <td class="center">${getBadge(t)}</td>
-      <td><span style="font-size:10px;color:var(--gray-400)">${t.pct}%</span>
-        <div class="prog-wrap"><div class="prog-fill" style="width:${t.pct}%;background:${progColor(t.pct)}"></div></div>
-      </td>
-    </tr>`).join('');
-  }
-
-  document.getElementById('table-container').innerHTML = `
-    <table><thead>${thead}</thead><tbody>${tbody ||
-      '<tr><td colspan="9" style="text-align:center;color:var(--gray-400);padding:2rem;">No hay tarjetas en esta categoría</td></tr>'
-    }</tbody></table>
-  `;
 }
 
 function show(id) { document.getElementById(id).style.display = 'block'; }
