@@ -4,37 +4,27 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Panel Operativo | Del Toro Asesores</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
-    --bg-base: #0a0e1a;
-    --bg-card: #111827;
-    --border: #1e2d45;
-    --blue: #3b82f6;
-    --blue-bright: #60a5fa;
-    --blue-pale: #1e3a5f;
-    --cyan: #06b6d4;
-    --green: #10b981;
-    --green-pale: #064e3b;
-    --amber: #f59e0b;
-    --red: #ef4444;
-    --red-bright: #f87171;
-    --red-pale: #450a0a;
-    --gray: #4b5563;
-    --gray-light: #9ca3af;
-    --white: #f1f5f9;
-    --white-dim: #64748b;
+    --bg-base: #0a0e1a; --bg-card: #111827; --border: #1e2d45;
+    --blue: #3b82f6; --blue-bright: #60a5fa; --blue-pale: #1e3a5f;
+    --cyan: #06b6d4; --green: #10b981; --amber: #f59e0b;
+    --red: #ef4444; --red-bright: #f87171; --red-pale: #450a0a;
+    --purple: #8b5cf6; --gray: #4b5563; --gray-light: #9ca3af;
+    --white: #f1f5f9; --white-dim: #64748b;
     --radius-sm: 6px; --radius-md: 10px; --radius-lg: 16px;
+    --mono: 'JetBrains Mono', monospace;
   }
-  body { font-family: 'Inter', sans-serif; background: var(--bg-base); color: var(--white); min-height: 100vh; padding: 1.5rem; }
+  body { font-family: 'Inter', sans-serif; background: var(--bg-base); color: var(--white); min-height: 100vh; }
 
-  /* LOGIN */
+  /* ── LOGIN ─────────────────────────────────────────────── */
   #login-screen { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 2rem; }
   .login-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 2.5rem; text-align: center; max-width: 380px; width: 100%; position: relative; overflow: hidden; }
-  .login-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--blue), var(--cyan), #8b5cf6); }
+  .login-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--blue), var(--cyan), var(--purple)); }
   .login-logo { width: 56px; height: 56px; background: var(--blue-pale); border: 1px solid var(--blue); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; margin: 0 auto 1.25rem; }
   .login-logo svg { width: 26px; height: 26px; stroke: var(--blue-bright); fill: none; stroke-width: 1.8; }
   .login-title { font-size: 20px; font-weight: 700; color: var(--white); margin-bottom: 6px; }
@@ -43,15 +33,59 @@
   .login-error { background: var(--red-pale); border: 1px solid var(--red); border-radius: var(--radius-sm); padding: 10px 14px; font-size: 12px; color: var(--red-bright); margin-top: 1rem; display: none; }
   .login-footer { font-size: 10px; color: var(--white-dim); margin-top: 1.5rem; opacity: 0.6; }
 
-  /* HEADER */
+  /* ── PANTALLA DE CARGA TECH ────────────────────────────── */
+  #loading-screen {
+    display: none; position: fixed; inset: 0;
+    background: var(--bg-base); z-index: 1000;
+    align-items: center; justify-content: center; flex-direction: column; gap: 2rem;
+  }
+  .loading-inner { width: 100%; max-width: 480px; padding: 2rem; }
+  .loading-header { display: flex; align-items: center; gap: 12px; margin-bottom: 2rem; }
+  .loading-icon { width: 40px; height: 40px; background: var(--blue-pale); border: 1px solid var(--blue); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .loading-icon svg { width: 20px; height: 20px; stroke: var(--blue-bright); fill: none; stroke-width: 1.8; }
+  .loading-title { font-size: 16px; font-weight: 700; color: var(--white); }
+  .loading-subtitle { font-size: 11px; color: var(--white-dim); margin-top: 2px; font-family: var(--mono); }
+
+  /* Barra de progreso principal */
+  .progress-track { height: 3px; background: var(--border); border-radius: 2px; margin-bottom: 2rem; overflow: hidden; }
+  .progress-fill { height: 100%; background: linear-gradient(90deg, var(--blue), var(--cyan)); border-radius: 2px; width: 0%; transition: width 0.6s ease; }
+
+  /* Pasos del proceso */
+  .steps { display: flex; flex-direction: column; gap: 10px; }
+  .step { display: flex; align-items: center; gap: 12px; padding: 10px 14px; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-md); transition: all 0.3s ease; }
+  .step.active { border-color: var(--blue); background: rgba(59,130,246,0.08); }
+  .step.done { border-color: rgba(16,185,129,0.4); background: rgba(16,185,129,0.06); }
+  .step.done .step-icon { background: rgba(16,185,129,0.2); border-color: var(--green); color: var(--green); }
+  .step.active .step-icon { background: var(--blue-pale); border-color: var(--blue); color: var(--blue-bright); animation: stepPulse 1s infinite; }
+  .step-icon { width: 28px; height: 28px; border-radius: var(--radius-sm); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0; transition: all 0.3s; }
+  .step-text { flex: 1; }
+  .step-label { font-size: 12px; font-weight: 500; color: var(--white-dim); transition: color 0.3s; }
+  .step.active .step-label { color: var(--white); }
+  .step.done .step-label { color: var(--green); }
+  .step-detail { font-size: 10px; color: var(--white-dim); font-family: var(--mono); margin-top: 2px; opacity: 0; transition: opacity 0.3s; }
+  .step.active .step-detail, .step.done .step-detail { opacity: 1; }
+  .step-check { font-size: 14px; color: var(--green); opacity: 0; transition: opacity 0.3s; }
+  .step.done .step-check { opacity: 1; }
+  @keyframes stepPulse { 0%,100%{box-shadow:0 0 0 0 rgba(59,130,246,0.4)} 50%{box-shadow:0 0 0 4px rgba(59,130,246,0)} }
+
+  /* Terminal log */
+  .terminal { background: #050810; border: 1px solid var(--border); border-radius: var(--radius-md); padding: 12px 14px; margin-top: 1.5rem; font-family: var(--mono); font-size: 10px; line-height: 1.8; max-height: 80px; overflow: hidden; }
+  .terminal-line { color: var(--white-dim); }
+  .terminal-line.highlight { color: var(--cyan); }
+  .terminal-line.success { color: var(--green); }
+  .terminal-cursor { display: inline-block; width: 6px; height: 11px; background: var(--cyan); margin-left: 2px; animation: blink 1s infinite; vertical-align: middle; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+  /* ── DASHBOARD ─────────────────────────────────────────── */
+  #dashboard-wrap { display: none; padding: 1.5rem; }
   .header { background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 100%); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.25rem 1.75rem; display: flex; align-items: center; justify-content: space-between; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 12px; position: relative; overflow: hidden; }
-  .header::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--blue), var(--cyan), #8b5cf6); }
+  .header::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--blue), var(--cyan), var(--purple)); }
   .header-left { display: flex; align-items: center; gap: 14px; }
   .header-icon { width: 44px; height: 44px; background: var(--blue-pale); border: 1px solid var(--blue); border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
   .header-icon svg { width: 22px; height: 22px; stroke: var(--blue-bright); fill: none; stroke-width: 1.8; }
   .header-title { color: var(--white); font-size: 18px; font-weight: 700; }
-  .header-sub { color: var(--white-dim); font-size: 11px; margin-top: 3px; }
-  .header-right { display: flex; align-items: center; gap: 10px; }
+  .header-sub { color: var(--white-dim); font-size: 11px; margin-top: 3px; font-family: var(--mono); }
+  .header-right { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
   .badge-live { background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.3); color: var(--green); font-size: 11px; font-weight: 500; padding: 5px 12px; border-radius: 20px; display: flex; align-items: center; gap: 6px; }
   .dot-live { width: 7px; height: 7px; background: var(--green); border-radius: 50%; animation: pulse 2s infinite; box-shadow: 0 0 6px var(--green); }
   @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(0.8)} }
@@ -62,50 +96,41 @@
   .user-badge { font-size: 11px; color: var(--white-dim); display: flex; align-items: center; gap: 6px; }
   .user-avatar { width: 24px; height: 24px; border-radius: 50%; border: 1px solid var(--border); }
 
-  /* ESTADOS */
-  #loading { text-align: center; padding: 4rem; color: var(--white-dim); font-size: 14px; }
+  /* Error */
   #error-box { text-align: center; padding: 3rem; color: var(--red); display: none; background: var(--red-pale); border: 1px solid var(--red); border-radius: var(--radius-lg); margin-bottom: 1rem; }
-  .spinner { width: 36px; height: 36px; border: 2px solid var(--border); border-top-color: var(--blue); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 1rem; }
-  @keyframes spin { to { transform: rotate(360deg); } }
-  #main { display: none; }
-  #dashboard-wrap { display: none; }
 
-  /* UPDATE INFO */
-  .update-info { background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.2); color: var(--green); font-size: 11px; padding: 6px 14px; border-radius: var(--radius-sm); margin-bottom: 1.25rem; text-align: center; }
+  /* Update info */
+  .update-info { background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.2); color: var(--green); font-size: 11px; padding: 6px 14px; border-radius: var(--radius-sm); margin-bottom: 1.25rem; text-align: center; font-family: var(--mono); }
 
-  /* MÉTRICAS */
+  /* Métricas */
   .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 1.25rem; }
   .metric-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 1rem 1.1rem; position: relative; overflow: hidden; }
-  .metric-card::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; border-radius: 0 0 var(--radius-md) var(--radius-md); }
-  .mc-blue::after { background: var(--blue); }
-  .mc-green::after { background: var(--green); }
-  .mc-amber::after { background: var(--amber); }
-  .mc-red::after { background: var(--red); }
+  .metric-card::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px; }
+  .mc-blue::after { background: var(--blue); } .mc-green::after { background: var(--green); }
+  .mc-amber::after { background: var(--amber); } .mc-red::after { background: var(--red); }
   .mc-cyan::after { background: var(--cyan); }
   .metric-label { font-size: 10px; font-weight: 600; color: var(--white-dim); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
   .metric-val { font-size: 32px; font-weight: 700; line-height: 1; margin-bottom: 4px; }
   .metric-hint { font-size: 11px; color: var(--white-dim); }
-  .mc-blue .metric-val { color: var(--blue-bright); }
-  .mc-green .metric-val { color: var(--green); }
-  .mc-amber .metric-val { color: var(--amber); }
-  .mc-red .metric-val { color: var(--red-bright); }
+  .mc-blue .metric-val { color: var(--blue-bright); } .mc-green .metric-val { color: var(--green); }
+  .mc-amber .metric-val { color: var(--amber); } .mc-red .metric-val { color: var(--red-bright); }
   .mc-cyan .metric-val { color: var(--cyan); }
 
-  /* MÉDICO */
+  /* Médico */
   .medico-section { background: linear-gradient(135deg, rgba(239,68,68,0.08) 0%, rgba(139,92,246,0.05) 100%); border: 1px solid rgba(239,68,68,0.3); border-radius: var(--radius-lg); padding: 1.1rem 1.25rem; margin-bottom: 1.25rem; display: none; }
   .medico-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
-  .medico-icon { width: 30px; height: 30px; background: var(--red-pale); border: 1px solid var(--red); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+  .medico-icon { width: 30px; height: 30px; background: var(--red-pale); border: 1px solid var(--red); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; }
   .medico-icon svg { width: 15px; height: 15px; stroke: var(--red-bright); fill: none; stroke-width: 2; }
   .medico-titulo { font-size: 13px; font-weight: 600; color: var(--red-bright); }
   .medico-sub { font-size: 11px; color: rgba(239,68,68,0.6); margin-top: 1px; }
   .medico-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; }
   .medico-card { background: rgba(10,14,26,0.6); border: 1px solid rgba(239,68,68,0.2); border-radius: var(--radius-md); padding: .85rem 1rem; display: flex; flex-direction: column; gap: 8px; }
   .medico-nombre { font-size: 13px; font-weight: 500; color: var(--white); line-height: 1.4; }
-  .medico-lista { font-size: 10px; color: var(--white-dim); margin-top: 1px; }
+  .medico-lista { font-size: 10px; color: var(--white-dim); }
   .medico-obs-label { font-size: 10px; font-weight: 600; color: rgba(239,68,68,0.7); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 3px; }
   .medico-obs { font-size: 11px; color: var(--gray-light); background: rgba(239,68,68,0.05); border: 1px solid rgba(239,68,68,0.15); border-radius: var(--radius-sm); padding: 6px 8px; line-height: 1.5; min-height: 30px; font-style: italic; }
 
-  /* CHART */
+  /* Chart */
   .chart-section { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.1rem 1.25rem; margin-bottom: 1.25rem; }
   .chart-wrap { position: relative; height: 160px; }
   .section-label { font-size: 10px; font-weight: 600; color: var(--white-dim); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
@@ -114,12 +139,12 @@
   .legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--white-dim); }
   .legend-dot { width: 8px; height: 8px; border-radius: 2px; }
 
-  /* TABLAS */
+  /* Tablas */
   .list-section { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.1rem 1.25rem; margin-bottom: 1.25rem; overflow-x: auto; }
   .list-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
   .list-title { font-size: 13px; font-weight: 600; color: var(--white); display: flex; align-items: center; gap: 8px; }
   .list-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-  .list-count { font-size: 11px; color: var(--white-dim); background: var(--bg-base); border: 1px solid var(--border); padding: 2px 8px; border-radius: 20px; }
+  .list-count { font-size: 11px; color: var(--white-dim); background: var(--bg-base); border: 1px solid var(--border); padding: 2px 8px; border-radius: 20px; font-family: var(--mono); }
   table { width: 100%; border-collapse: collapse; font-size: 12px; min-width: 500px; }
   thead tr { border-bottom: 1px solid var(--border); }
   th { padding: 8px; text-align: left; font-size: 10px; font-weight: 600; color: var(--white-dim); text-transform: uppercase; letter-spacing: 0.07em; white-space: nowrap; }
@@ -138,13 +163,13 @@
   .prog-wrap { height: 4px; background: var(--border); border-radius: 3px; margin-top: 5px; }
   .prog-fill { height: 4px; border-radius: 3px; }
   .obs-cell { font-size: 11px; color: var(--white-dim); font-style: italic; max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .footer { text-align: center; font-size: 11px; color: var(--white-dim); padding-top: 1rem; opacity: 0.5; }
-  @media (max-width: 600px) { body { padding: 1rem; } .metrics-grid { grid-template-columns: repeat(2, 1fr); } }
+  .footer { text-align: center; font-size: 11px; color: var(--white-dim); padding: 1rem 0; opacity: 0.5; font-family: var(--mono); }
+  @media (max-width: 600px) { #dashboard-wrap { padding: 1rem; } .metrics-grid { grid-template-columns: repeat(2, 1fr); } }
 </style>
 </head>
 <body>
 
-<!-- PANTALLA DE LOGIN -->
+<!-- ── PANTALLA DE LOGIN ──────────────────────────────────── -->
 <div id="login-screen">
   <div class="login-card">
     <div class="login-logo">
@@ -154,14 +179,71 @@
     <div class="login-sub">Del Toro Asesores · Seguros Monterrey NYL<br>Acceso restringido al equipo autorizado</div>
     <div class="login-divider">Inicia sesión con tu cuenta de Google</div>
     <div id="google-btn"></div>
-    <div class="login-error" id="login-error">
-      ⛔ Acceso denegado. Tu cuenta no tiene permiso para ver este panel.
-    </div>
+    <div class="login-error" id="login-error">⛔ Acceso denegado. Tu cuenta no tiene permiso para ver este panel.</div>
     <div class="login-footer">Solo cuentas autorizadas del equipo pueden acceder</div>
   </div>
 </div>
 
-<!-- DASHBOARD -->
+<!-- ── PANTALLA DE CARGA TECH ────────────────────────────── -->
+<div id="loading-screen" style="display:none;position:fixed;inset:0;background:var(--bg-base);z-index:1000;align-items:center;justify-content:center;">
+  <div class="loading-inner">
+    <div class="loading-header">
+      <div class="loading-icon">
+        <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
+      </div>
+      <div>
+        <div class="loading-title">Panel Operativo</div>
+        <div class="loading-subtitle" id="loading-subtitle">Iniciando sincronización...</div>
+      </div>
+    </div>
+
+    <div class="progress-track">
+      <div class="progress-fill" id="progress-fill"></div>
+    </div>
+
+    <div class="steps">
+      <div class="step" id="step-1">
+        <div class="step-icon">🔐</div>
+        <div class="step-text">
+          <div class="step-label">Autenticando con Google Drive</div>
+          <div class="step-detail" id="detail-1">Verificando credenciales...</div>
+        </div>
+        <div class="step-check">✓</div>
+      </div>
+      <div class="step" id="step-2">
+        <div class="step-icon">📡</div>
+        <div class="step-text">
+          <div class="step-label">Conectando con Trello API</div>
+          <div class="step-detail" id="detail-2">Obteniendo tarjetas y checklists...</div>
+        </div>
+        <div class="step-check">✓</div>
+      </div>
+      <div class="step" id="step-3">
+        <div class="step-icon">⚙️</div>
+        <div class="step-text">
+          <div class="step-label">Procesando datos operativos</div>
+          <div class="step-detail" id="detail-3">Analizando estatus de trámites...</div>
+        </div>
+        <div class="step-check">✓</div>
+      </div>
+      <div class="step" id="step-4">
+        <div class="step-icon">📊</div>
+        <div class="step-text">
+          <div class="step-label">Construyendo el dashboard</div>
+          <div class="step-detail" id="detail-4">Renderizando métricas y tablas...</div>
+        </div>
+        <div class="step-check">✓</div>
+      </div>
+    </div>
+
+    <div class="terminal" id="terminal">
+      <div class="terminal-line highlight">$ iniciando panel-operativo v2.0</div>
+      <div class="terminal-line" id="term-line">conexión establecida<span class="terminal-cursor"></span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── DASHBOARD ─────────────────────────────────────────── -->
 <div id="dashboard-wrap">
   <div class="header">
     <div class="header-left">
@@ -170,7 +252,7 @@
       </div>
       <div>
         <div class="header-title">Panel Operativo</div>
-        <div class="header-sub" id="header-sub">Cargando datos...</div>
+        <div class="header-sub" id="header-sub">sincronizando...</div>
       </div>
     </div>
     <div class="header-right">
@@ -183,16 +265,14 @@
       <button class="btn-logout" onclick="cerrarSesion()">Salir</button>
     </div>
   </div>
-
   <div id="error-box"><p id="error-msg"></p></div>
-  <div id="loading"><div class="spinner"></div>Conectando con Trello...</div>
   <div id="main"></div>
-  <div class="footer" style="padding-bottom:1rem">Panel generado automáticamente · N8N + Trello + Google Drive</div>
+  <div class="footer">panel-operativo · N8N + Trello + Google Drive · del-toro-asesores</div>
 </div>
 
 <script>
-// ─── CONFIGURACIÓN ────────────────────────────────────────────
-const CLIENT_ID = '671751300931-psmaa407asns7t6utstvvcjjmg5a5mrn.apps.googleusercontent.com';
+// ── CONFIGURACIÓN ────────────────────────────────────────────
+const CLIENT_ID = '247791692579-e717068u8fro0mjbdu0kb75gb8791i6v.apps.googleusercontent.com';
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxhbSVXPPTRwiKhl-K9BaVak_et5wiC6qVpOLk8-czkM9rUaeP9RNeyvvInIMh3nWfo/exec';
 const EMAILS_AUTORIZADOS = [
   'sofia.ledesma@deltoroasesores.com',
@@ -212,57 +292,83 @@ const LISTAS_CONFIG = {
 
 let chartDonut = null, datosGlobales = null;
 
-// ─── GOOGLE LOGIN ─────────────────────────────────────────────
+// ── PANTALLA DE CARGA ANIMADA ────────────────────────────────
+// Controla la secuencia visual de pasos mientras los datos cargan
+function mostrarCarga() {
+  const pantalla = document.getElementById('loading-screen');
+  pantalla.style.display = 'flex';
+
+  const pasos = [
+    { id: 1, progreso: 25, subtitulo: 'Autenticando con Google Drive...', detalle: 'drive.google.com · verificado', terminal: 'GET /drive/v3/files → 200 OK' },
+    { id: 2, progreso: 55, subtitulo: 'Descargando datos de Trello...', detalle: 'api.trello.com · 2 listas activas', terminal: 'GET /boards/cards → procesando...' },
+    { id: 3, progreso: 80, subtitulo: 'Procesando checklists...', detalle: 'analizando firmas y estatus', terminal: 'parseando 0 tarjetas · detectando urgentes...' },
+    { id: 4, progreso: 100, subtitulo: 'Construyendo dashboard...', detalle: 'renderizando métricas y tablas', terminal: 'dashboard listo ✓' },
+  ];
+
+  let i = 0;
+  const intervalo = setInterval(() => {
+    if (i > 0) {
+      // Marcar el paso anterior como completado
+      const stepAnterior = document.getElementById(`step-${pasos[i-1].id}`);
+      stepAnterior.classList.remove('active');
+      stepAnterior.classList.add('done');
+    }
+    if (i < pasos.length) {
+      const paso = pasos[i];
+      // Activar paso actual
+      document.getElementById(`step-${paso.id}`).classList.add('active');
+      document.getElementById(`detail-${paso.id}`).textContent = paso.detalle;
+      document.getElementById('progress-fill').style.width = paso.progreso + '%';
+      document.getElementById('loading-subtitle').textContent = paso.subtitulo;
+      document.getElementById('term-line').innerHTML = paso.terminal + '<span class="terminal-cursor"></span>';
+      i++;
+    } else {
+      clearInterval(intervalo);
+    }
+  }, 600);
+}
+
+function ocultarCarga() {
+  document.getElementById('loading-screen').style.display = 'none';
+}
+
+// ── GOOGLE LOGIN ─────────────────────────────────────────────
 window.onload = function() {
-  // Verificar sesión guardada
+  // Si ya hay sesión guardada, saltamos el login directamente
   const sesion = sessionStorage.getItem('usuario_autorizado');
   if (sesion) {
     const usuario = JSON.parse(sesion);
     mostrarDashboard(usuario);
     return;
   }
-
-  // Inicializar botón de Google
+  // Inicializar botón de Google Sign-In
   google.accounts.id.initialize({
     client_id: CLIENT_ID,
     callback: manejarLogin,
     auto_select: false,
   });
-
   google.accounts.id.renderButton(
     document.getElementById('google-btn'),
-    {
-      theme: 'filled_black',
-      size: 'large',
-      width: 280,
-      text: 'signin_with',
-      shape: 'rectangular',
-      logo_alignment: 'left'
-    }
+    { theme: 'filled_black', size: 'large', width: 280, text: 'signin_with', shape: 'rectangular' }
   );
 };
 
 function manejarLogin(response) {
-  // Decodificar JWT de Google
+  // Decodificar el JWT que devuelve Google para obtener el email del usuario
   const payload = JSON.parse(atob(response.credential.split('.')[1]));
-  const email = payload.email;
-  const nombre = payload.name;
-  const foto = payload.picture;
+  const email = payload.email.toLowerCase();
 
-  if (!EMAILS_AUTORIZADOS.includes(email.toLowerCase())) {
+  if (!EMAILS_AUTORIZADOS.includes(email)) {
     document.getElementById('login-error').style.display = 'block';
     return;
   }
-
-  // Guardar sesión
-  const usuario = { email, nombre, foto };
+  const usuario = { email, nombre: payload.name, foto: payload.picture };
   sessionStorage.setItem('usuario_autorizado', JSON.stringify(usuario));
   mostrarDashboard(usuario);
 }
 
 function mostrarDashboard(usuario) {
   document.getElementById('login-screen').style.display = 'none';
-  document.getElementById('dashboard-wrap').style.display = 'block';
   document.getElementById('user-name').textContent = usuario.nombre || usuario.email;
   if (usuario.foto) {
     const avatar = document.getElementById('user-avatar');
@@ -278,51 +384,61 @@ function cerrarSesion() {
   location.reload();
 }
 
-// ─── DATOS ───────────────────────────────────────────────────
-function norm(str) {
-  return (str||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
-}
-
-function esMedico(t) {
-  return (t.labels||[]).some(l => {
-    const n = norm(l.name||'');
-    const c = (l.color||'').toLowerCase();
-    return n.includes('medico') || c === 'red';
-  });
-}
-
+// ── CARGA DE DATOS ───────────────────────────────────────────
 function cargarDatos() {
-  show('loading'); hide('main');
+  // Mostrar pantalla de carga tech antes de pedir los datos
+  mostrarCarga();
+  document.getElementById('dashboard-wrap').style.display = 'none';
   document.getElementById('error-box').style.display = 'none';
+
   const callbackName = 'cb_' + Date.now();
   const script = document.createElement('script');
+
   const timeout = setTimeout(() => {
+    ocultarCarga();
+    document.getElementById('dashboard-wrap').style.display = 'block';
     document.getElementById('error-box').style.display = 'block';
-    document.getElementById('error-msg').textContent = 'Error: No se pudo conectar.';
-    hide('loading');
+    document.getElementById('error-msg').textContent = 'Error: No se pudo conectar con el servidor.';
     delete window[callbackName];
     if (document.body.contains(script)) document.body.removeChild(script);
   }, 12000);
+
   window[callbackName] = function(data) {
     clearTimeout(timeout);
     delete window[callbackName];
     if (document.body.contains(script)) document.body.removeChild(script);
-    if (data.error) {
-      document.getElementById('error-box').style.display = 'block';
-      document.getElementById('error-msg').textContent = 'Error: ' + data.error;
-      hide('loading'); return;
-    }
-    datosGlobales = data;
-    renderDashboard(data);
+
+    // Pequeña pausa para que la animación termine elegantemente
+    setTimeout(() => {
+      ocultarCarga();
+      document.getElementById('dashboard-wrap').style.display = 'block';
+      if (data.error) {
+        document.getElementById('error-box').style.display = 'block';
+        document.getElementById('error-msg').textContent = 'Error: ' + data.error;
+        return;
+      }
+      datosGlobales = data;
+      renderDashboard(data);
+    }, 800);
   };
+
   script.src = APPS_SCRIPT_URL + '?key=deltoro2026&callback=' + callbackName + '&t=' + Date.now();
   script.onerror = function() {
     clearTimeout(timeout);
+    ocultarCarga();
+    document.getElementById('dashboard-wrap').style.display = 'block';
     document.getElementById('error-box').style.display = 'block';
-    document.getElementById('error-msg').textContent = 'Error al cargar script.';
-    hide('loading');
+    document.getElementById('error-msg').textContent = 'Error al cargar script. Verifica tu conexión.';
   };
   document.body.appendChild(script);
+}
+
+// ── RENDER DASHBOARD ─────────────────────────────────────────
+function norm(str) {
+  return (str||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+}
+function esMedico(t) {
+  return (t.labels||[]).some(l => norm(l.name||'').includes('medico') || (l.color||'').toLowerCase() === 'red');
 }
 
 function renderDashboard(data) {
@@ -331,26 +447,20 @@ function renderDashboard(data) {
   const medicas = tf.filter(t => esMedico(t));
   const normales = tf.filter(t => !esMedico(t));
 
-  const fecha = new Date(actualizadoEn).toLocaleString('es-MX', {
-    day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit'
-  });
-  document.getElementById('header-sub').textContent = `Actualizado: ${fecha}`;
+  const fecha = new Date(actualizadoEn).toLocaleString('es-MX', { day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' });
+  document.getElementById('header-sub').textContent = `última sync · ${fecha}`;
 
   const stats = {
-    enProceso:    normales.filter(t => t.pct > 0 && t.pct < 100).length,
     concluidos:   normales.filter(t => t.pct === 100).length,
+    enProceso:    normales.filter(t => t.pct > 0 && t.pct < 100).length,
     sinIniciar:   normales.filter(t => t.pct === 0).length,
     firmaUrgente: normales.filter(t => t.urgente).length,
     medicos:      medicas.length,
-    vencen:       normales.filter(t => {
-      if (!t.vencimiento || t.pct === 100) return false;
-      return new Date(t.vencimiento) < new Date(Date.now() + 3*86400000);
-    }).length
+    vencen:       normales.filter(t => t.vencimiento && t.pct < 100 && new Date(t.vencimiento) < new Date(Date.now() + 3*86400000)).length
   };
 
-  const main = document.getElementById('main');
-  main.innerHTML = `
-    <div class="update-info">⚡ Sincronizado el ${fecha} · N8N actualiza cada 30 min</div>
+  document.getElementById('main').innerHTML = `
+    <div class="update-info">⚡ sync · ${fecha} · N8N actualiza cada 30 min · ${normales.length} tarjetas activas</div>
     <div class="metrics-grid" id="metrics-grid"></div>
     <div id="bloque-medico"></div>
     <div class="chart-section">
@@ -365,101 +475,62 @@ function renderDashboard(data) {
   renderMedicos(medicas);
   renderDonut(normales);
   renderTablas(normales);
-  hide('loading'); show('main');
 }
 
 function renderMetrics(s) {
   document.getElementById('metrics-grid').innerHTML = `
-    <div class="metric-card mc-green">
-      <div class="metric-label">Concluidos</div>
-      <div class="metric-val">${s.concluidos}</div>
-      <div class="metric-hint">Completados al 100%</div>
-    </div>
-    <div class="metric-card mc-blue">
-      <div class="metric-label">En proceso</div>
-      <div class="metric-val">${s.enProceso}</div>
-      <div class="metric-hint">Avance parcial</div>
-    </div>
-    <div class="metric-card mc-amber">
-      <div class="metric-label">Sin iniciar</div>
-      <div class="metric-val">${s.sinIniciar}</div>
-      <div class="metric-hint">0% de avance</div>
-    </div>
-    <div class="metric-card mc-cyan">
-      <div class="metric-label">Pendiente firma Sofía</div>
-      <div class="metric-val">${s.firmaUrgente}</div>
-      <div class="metric-hint">Cliente ya firmó</div>
-    </div>
-    <div class="metric-card mc-amber">
-      <div class="metric-label">Vencen pronto</div>
-      <div class="metric-val">${s.vencen}</div>
-      <div class="metric-hint">Próximos 3 días</div>
-    </div>
-    ${s.medicos > 0 ? `
-    <div class="metric-card mc-red">
-      <div class="metric-label">Trámites médicos</div>
-      <div class="metric-val">${s.medicos}</div>
-      <div class="metric-hint">Requieren atención</div>
-    </div>` : ''}
+    <div class="metric-card mc-green"><div class="metric-label">Concluidos</div><div class="metric-val">${s.concluidos}</div><div class="metric-hint">100% completados</div></div>
+    <div class="metric-card mc-blue"><div class="metric-label">En proceso</div><div class="metric-val">${s.enProceso}</div><div class="metric-hint">Avance parcial</div></div>
+    <div class="metric-card mc-amber"><div class="metric-label">Sin iniciar</div><div class="metric-val">${s.sinIniciar}</div><div class="metric-hint">0% de avance</div></div>
+    <div class="metric-card mc-cyan"><div class="metric-label">Pendiente firma Sofía</div><div class="metric-val">${s.firmaUrgente}</div><div class="metric-hint">Cliente ya firmó</div></div>
+    <div class="metric-card mc-amber"><div class="metric-label">Vencen pronto</div><div class="metric-val">${s.vencen}</div><div class="metric-hint">Próximos 3 días</div></div>
+    ${s.medicos > 0 ? `<div class="metric-card mc-red"><div class="metric-label">Trámites médicos</div><div class="metric-val">${s.medicos}</div><div class="metric-hint">Atención especial</div></div>` : ''}
   `;
 }
 
 function renderMedicos(medicas) {
   const bloque = document.getElementById('bloque-medico');
   if (!medicas.length) return;
-  const progColor = p => p === 100 ? '#10b981' : p >= 60 ? '#3b82f6' : '#ef4444';
+  const progColor = p => p===100 ? '#10b981' : p>=60 ? '#3b82f6' : '#ef4444';
   const getSemaforo = t => {
-    if (t.pct === 100) return '<span class="badge badge-ok">Concluido</span>';
+    if (t.pct===100) return '<span class="badge badge-ok">Concluido</span>';
     if (t.urgente) return '<span class="badge badge-danger">Firma Sofía</span>';
-    if (t.pct >= 50) return '<span class="badge badge-warn">En proceso</span>';
-    if (t.pct > 0) return '<span class="badge badge-info">Iniciado</span>';
+    if (t.pct>=50) return '<span class="badge badge-warn">En proceso</span>';
+    if (t.pct>0) return '<span class="badge badge-info">Iniciado</span>';
     return '<span class="badge badge-neutral">Sin iniciar</span>';
   };
   bloque.innerHTML = `
     <div class="medico-section" style="display:block">
       <div class="medico-header">
-        <div class="medico-icon">
-          <svg viewBox="0 0 24 24"><path d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
-        </div>
-        <div>
-          <div class="medico-titulo">Trámites médicos en proceso — ${medicas.length} tarjeta${medicas.length>1?'s':''}</div>
-          <div class="medico-sub">Requieren atención especial</div>
-        </div>
+        <div class="medico-icon"><svg viewBox="0 0 24 24"><path d="M12 9v4m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg></div>
+        <div><div class="medico-titulo">Trámites médicos en proceso — ${medicas.length} tarjeta${medicas.length>1?'s':''}</div><div class="medico-sub">Requieren atención especial</div></div>
       </div>
-      <div class="medico-grid">
-        ${medicas.map(t => `
-          <div class="medico-card">
-            <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px">
-              <div><div class="medico-nombre">${t.nombre}</div><div class="medico-lista">${t.lista}</div></div>
-              ${getSemaforo(t)}
-            </div>
-            <div>
-              <div class="medico-obs-label">Observaciones</div>
-              <div class="medico-obs">${t.desc ? t.desc.substring(0,120)+(t.desc.length>120?'…':'') : 'Sin observaciones registradas'}</div>
-            </div>
-            <div style="font-size:10px;color:var(--white-dim)">${t.pct}% completado</div>
-            <div class="prog-wrap"><div class="prog-fill" style="width:${t.pct}%;background:${progColor(t.pct)}"></div></div>
+      <div class="medico-grid">${medicas.map(t=>`
+        <div class="medico-card">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px">
+            <div><div class="medico-nombre">${t.nombre}</div><div class="medico-lista">${t.lista}</div></div>
+            ${getSemaforo(t)}
           </div>
-        `).join('')}
+          <div><div class="medico-obs-label">Observaciones</div>
+          <div class="medico-obs">${t.desc ? t.desc.substring(0,120)+(t.desc.length>120?'…':'') : 'Sin observaciones registradas'}</div></div>
+          <div style="font-size:10px;color:var(--white-dim);font-family:var(--mono)">${t.pct}% completado</div>
+          <div class="prog-wrap"><div class="prog-fill" style="width:${t.pct}%;background:${progColor(t.pct)}"></div></div>
+        </div>`).join('')}
       </div>
-    </div>
-  `;
+    </div>`;
 }
 
 function renderDonut(tarjetas) {
-  const concluido  = tarjetas.filter(t => t.pct === 100).length;
-  const enProceso  = tarjetas.filter(t => t.pct > 0 && t.pct < 100).length;
-  const sinIniciar = tarjetas.filter(t => t.pct === 0).length;
+  const c=tarjetas.filter(t=>t.pct===100).length, p=tarjetas.filter(t=>t.pct>0&&t.pct<100).length, s=tarjetas.filter(t=>t.pct===0).length;
   document.getElementById('legend-donut').innerHTML = `
-    <span class="legend-item"><span class="legend-dot" style="background:#10b981"></span>Concluido (${concluido})</span>
-    <span class="legend-item"><span class="legend-dot" style="background:#3b82f6"></span>En proceso (${enProceso})</span>
-    <span class="legend-item"><span class="legend-dot" style="background:#374151"></span>Sin iniciar (${sinIniciar})</span>
-  `;
+    <span class="legend-item"><span class="legend-dot" style="background:#10b981"></span>Concluido (${c})</span>
+    <span class="legend-item"><span class="legend-dot" style="background:#3b82f6"></span>En proceso (${p})</span>
+    <span class="legend-item"><span class="legend-dot" style="background:#374151"></span>Sin iniciar (${s})</span>`;
   if (chartDonut) chartDonut.destroy();
   chartDonut = new Chart(document.getElementById('chartDonut'), {
-    type: 'doughnut',
-    data: { labels:['Concluido','En proceso','Sin iniciar'], datasets:[{ data:[concluido,enProceso,sinIniciar], backgroundColor:['#10b981','#3b82f6','#374151'], borderWidth:0, hoverOffset:4 }] },
-    options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false}, tooltip:{ backgroundColor:'#1e2d45', titleColor:'#f1f5f9', bodyColor:'#9ca3af' } }, cutout:'70%' }
+    type:'doughnut',
+    data:{labels:['Concluido','En proceso','Sin iniciar'],datasets:[{data:[c,p,s],backgroundColor:['#10b981','#3b82f6','#374151'],borderWidth:0,hoverOffset:4}]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{backgroundColor:'#1e2d45',titleColor:'#f1f5f9',bodyColor:'#9ca3af'}},cutout:'70%'}
   });
 }
 
@@ -467,111 +538,52 @@ function renderTablas(tarjetas) {
   const contenedor = document.getElementById('tablas-listas');
   contenedor.innerHTML = '';
   const chk = v => v ? '<span class="chk-yes">✓</span>' : '<span class="chk-no">—</span>';
-  const progColor = p => p === 100 ? '#10b981' : p >= 60 ? '#3b82f6' : '#f59e0b';
+  const progColor = p => p===100 ? '#10b981' : p>=60 ? '#3b82f6' : '#f59e0b';
 
   const getBadge = t => {
-    if (t.pct === 100) return '<span class="badge badge-ok">Concluido</span>';
+    if (t.pct===100) return '<span class="badge badge-ok">Concluido</span>';
     if (t.urgente) return '<span class="badge badge-danger">Firma Sofía</span>';
     if (t.checks?.enviado && !t.checks?.firmaCliente) return '<span class="badge badge-warn">Espera firma</span>';
-    if (t.pct > 0) return '<span class="badge badge-info">En proceso</span>';
+    if (t.pct>0) return '<span class="badge badge-info">En proceso</span>';
     return '<span class="badge badge-neutral">Sin iniciar</span>';
   };
 
-  const getBadgeSimple = t => {
-    if (t.pct === 100) return '<span class="badge badge-ok">Completada</span>';
-    return '<span class="badge badge-neutral">No completada</span>';
-  };
-
-  // Ordenar tarjetas por prioridad
-  const ordenar = (cards) => {
-    const orden = t => {
-      if (t.urgente) return 0;
-      if (t.checks?.enviado && !t.checks?.firmaCliente) return 1;
-      if (t.pct > 0 && t.pct < 100) return 2;
-      if (t.pct === 0) return 3;
-      if (t.pct === 100) return 4;
-      return 5;
-    };
-    return [...cards].sort((a, b) => orden(a) - orden(b));
-  };
+  // Ordenar por prioridad: urgentes primero, concluidos al final
+  const ordenar = cards => [...cards].sort((a,b) => {
+    const p = t => t.urgente?0 : (t.checks?.enviado&&!t.checks?.firmaCliente)?1 : t.pct>0&&t.pct<100?2 : t.pct===0?3 : 4;
+    return p(a) - p(b);
+  });
 
   Object.entries(LISTAS_CONFIG).forEach(([key, cfg]) => {
     const cards = ordenar(tarjetas.filter(t => cfg.match(t)));
     if (!cards.length) return;
 
-    let thead = '', tbody = '';
-
-    if (cfg.tieneChecklist && cfg.tipo === 'tramite') {
-      thead = `<tr>
-        <th style="width:30%">Tarjeta</th>
-        <th class="center">Llenado</th><th class="center">Enviado</th>
-        <th class="center">F. Cliente</th><th class="center">F. Sofía</th>
-        <th class="center">Portal</th><th class="center">Estatus</th>
-        <th style="width:10%">Avance</th>
-      </tr>`;
-      tbody = cards.map(t => `<tr>
-        <td style="font-weight:500;color:var(--white)">${t.nombre}</td>
-        <td class="center">${chk(t.checks?.llenado)}</td>
-        <td class="center">${chk(t.checks?.enviado)}</td>
-        <td class="center">${chk(t.checks?.firmaCliente)}</td>
-        <td class="center">${chk(t.checks?.firmasofi)}</td>
-        <td class="center">${chk(t.checks?.portal)}</td>
-        <td class="center">${getBadge(t)}</td>
-        <td><span style="font-size:10px;color:var(--white-dim)">${t.pct}%</span>
-          <div class="prog-wrap"><div class="prog-fill" style="width:${t.pct}%;background:${progColor(t.pct)}"></div></div>
-        </td>
-      </tr>`).join('');
+    let thead='', tbody='';
+    if (cfg.tieneChecklist && cfg.tipo==='tramite') {
+      thead=`<tr><th style="width:30%">Tarjeta</th><th class="center">Llenado</th><th class="center">Enviado</th><th class="center">F. Cliente</th><th class="center">F. Sofía</th><th class="center">Portal</th><th class="center">Estatus</th><th style="width:10%">Avance</th></tr>`;
+      tbody=cards.map(t=>`<tr><td style="font-weight:500;color:var(--white)">${t.nombre}</td><td class="center">${chk(t.checks?.llenado)}</td><td class="center">${chk(t.checks?.enviado)}</td><td class="center">${chk(t.checks?.firmaCliente)}</td><td class="center">${chk(t.checks?.firmasofi)}</td><td class="center">${chk(t.checks?.portal)}</td><td class="center">${getBadge(t)}</td><td><span style="font-size:10px;color:var(--white-dim);font-family:var(--mono)">${t.pct}%</span><div class="prog-wrap"><div class="prog-fill" style="width:${t.pct}%;background:${progColor(t.pct)}"></div></div></td></tr>`).join('');
     } else if (cfg.tieneChecklist) {
-      thead = `<tr>
-        <th style="width:30%">Tarjeta</th>
-        <th class="center">Solicitud</th><th class="center">F. Cliente</th>
-        <th class="center">F. Sofía</th><th class="center">Autorizada</th>
-        <th class="center">Pagada</th><th class="center">Estatus</th>
-        <th style="width:10%">Avance</th>
-      </tr>`;
-      tbody = cards.map(t => `<tr>
-        <td style="font-weight:500;color:var(--white)">${t.nombre}</td>
-        <td class="center">${chk(t.checks?.solicitud)}</td>
-        <td class="center">${chk(t.checks?.firmaCliente)}</td>
-        <td class="center">${chk(t.checks?.firmasofi)}</td>
-        <td class="center">${chk(t.checks?.autorizada)}</td>
-        <td class="center">${chk(t.checks?.pagada)}</td>
-        <td class="center">${getBadge(t)}</td>
-        <td><span style="font-size:10px;color:var(--white-dim)">${t.pct}%</span>
-          <div class="prog-wrap"><div class="prog-fill" style="width:${t.pct}%;background:${progColor(t.pct)}"></div></div>
-        </td>
-      </tr>`).join('');
+      thead=`<tr><th style="width:30%">Tarjeta</th><th class="center">Solicitud</th><th class="center">F. Cliente</th><th class="center">F. Sofía</th><th class="center">Autorizada</th><th class="center">Pagada</th><th class="center">Estatus</th><th style="width:10%">Avance</th></tr>`;
+      tbody=cards.map(t=>`<tr><td style="font-weight:500;color:var(--white)">${t.nombre}</td><td class="center">${chk(t.checks?.solicitud)}</td><td class="center">${chk(t.checks?.firmaCliente)}</td><td class="center">${chk(t.checks?.firmasofi)}</td><td class="center">${chk(t.checks?.autorizada)}</td><td class="center">${chk(t.checks?.pagada)}</td><td class="center">${getBadge(t)}</td><td><span style="font-size:10px;color:var(--white-dim);font-family:var(--mono)">${t.pct}%</span><div class="prog-wrap"><div class="prog-fill" style="width:${t.pct}%;background:${progColor(t.pct)}"></div></div></td></tr>`).join('');
     } else {
-      thead = `<tr>
-        <th style="width:35%">Tarjeta</th>
-        <th style="width:35%">Observaciones</th>
-        <th class="center">Estatus</th>
-      </tr>`;
-      tbody = cards.map(t => `<tr>
-        <td style="font-weight:500;color:var(--white)">${t.nombre}</td>
-        <td class="obs-cell" title="${t.desc||''}">${t.desc || '<span style="font-style:italic;color:var(--gray)">Sin observaciones</span>'}</td>
-        <td class="center">${getBadgeSimple(t)}</td>
-      </tr>`).join('');
+      thead=`<tr><th style="width:35%">Tarjeta</th><th style="width:35%">Observaciones</th><th class="center">Estatus</th></tr>`;
+      tbody=cards.map(t=>`<tr><td style="font-weight:500;color:var(--white)">${t.nombre}</td><td class="obs-cell" title="${t.desc||''}">${t.desc||'<span style="font-style:italic;color:var(--gray)">Sin observaciones</span>'}</td><td class="center">${t.pct===100?'<span class="badge badge-ok">Completada</span>':'<span class="badge badge-neutral">No completada</span>'}</td></tr>`).join('');
     }
 
     const section = document.createElement('div');
     section.className = 'list-section';
     section.innerHTML = `
       <div class="list-header">
-        <div class="list-title">
-          <span class="list-dot" style="background:${cfg.color};box-shadow:0 0 6px ${cfg.color}"></span>
-          ${cfg.label}
-        </div>
+        <div class="list-title"><span class="list-dot" style="background:${cfg.color};box-shadow:0 0 6px ${cfg.color}"></span>${cfg.label}</div>
         <span class="list-count">${cards.length} tarjeta${cards.length>1?'s':''}</span>
       </div>
-      <table><thead>${thead}</thead><tbody>${tbody}</tbody></table>
-    `;
+      <table><thead>${thead}</thead><tbody>${tbody}</tbody></table>`;
     contenedor.appendChild(section);
   });
 }
 
-function show(id) { document.getElementById(id).style.display = 'block'; }
-function hide(id) { document.getElementById(id).style.display = 'none'; }
+function show(id){document.getElementById(id).style.display='block';}
+function hide(id){document.getElementById(id).style.display='none';}
 </script>
 </body>
 </html>
