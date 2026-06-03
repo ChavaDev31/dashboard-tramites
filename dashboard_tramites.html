@@ -391,46 +391,34 @@ function cargarDatos() {
   document.getElementById('dashboard-wrap').style.display = 'none';
   document.getElementById('error-box').style.display = 'none';
 
-  const callbackName = 'cb_' + Date.now();
-  const script = document.createElement('script');
-
-  const timeout = setTimeout(() => {
-    ocultarCarga();
-    document.getElementById('dashboard-wrap').style.display = 'block';
-    document.getElementById('error-box').style.display = 'block';
-    document.getElementById('error-msg').textContent = 'Error: No se pudo conectar con el servidor.';
-    delete window[callbackName];
-    if (document.body.contains(script)) document.body.removeChild(script);
-  }, 12000);
-
-  window[callbackName] = function(data) {
-    clearTimeout(timeout);
-    delete window[callbackName];
-    if (document.body.contains(script)) document.body.removeChild(script);
-
-    // Pequeña pausa para que la animación termine elegantemente
-    setTimeout(() => {
+  // Usamos fetch en lugar de JSONP porque los navegadores modernos
+  // bloquean la inyección de scripts entre dominios diferentes (CORS)
+  fetch(APPS_SCRIPT_URL + '?key=deltoro2026&t=' + Date.now())
+    .then(response => {
+      if (!response.ok) throw new Error('HTTP ' + response.status);
+      return response.json();
+    })
+    .then(data => {
+      // Pequeña pausa para que la animación de carga termine elegantemente
+      setTimeout(() => {
+        ocultarCarga();
+        document.getElementById('dashboard-wrap').style.display = 'block';
+        if (data.error) {
+          document.getElementById('error-box').style.display = 'block';
+          document.getElementById('error-msg').textContent = 'Error: ' + data.error;
+          return;
+        }
+        datosGlobales = data;
+        renderDashboard(data);
+      }, 800);
+    })
+    .catch(error => {
       ocultarCarga();
       document.getElementById('dashboard-wrap').style.display = 'block';
-      if (data.error) {
-        document.getElementById('error-box').style.display = 'block';
-        document.getElementById('error-msg').textContent = 'Error: ' + data.error;
-        return;
-      }
-      datosGlobales = data;
-      renderDashboard(data);
-    }, 800);
-  };
-
-  script.src = APPS_SCRIPT_URL + '?key=deltoro2026&callback=' + callbackName + '&t=' + Date.now();
-  script.onerror = function() {
-    clearTimeout(timeout);
-    ocultarCarga();
-    document.getElementById('dashboard-wrap').style.display = 'block';
-    document.getElementById('error-box').style.display = 'block';
-    document.getElementById('error-msg').textContent = 'Error al cargar script. Verifica tu conexión.';
-  };
-  document.body.appendChild(script);
+      document.getElementById('error-box').style.display = 'block';
+      document.getElementById('error-msg').textContent = 'Error al conectar con el servidor. Verifica tu conexión.';
+      console.error('Error cargando datos:', error);
+    });
 }
 
 // ── RENDER DASHBOARD ─────────────────────────────────────────
