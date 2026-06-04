@@ -10,19 +10,19 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#0a0e1a;--bg-card:#111827;--bg-card2:#0f1724;--border:#1e2d45;
+  --bg:#0a0e1a;--bg-card:#111827;--border:#1e2d45;
   --blue:#3b82f6;--blue-b:#60a5fa;--blue-p:#1e3a5f;
   --cyan:#06b6d4;--green:#10b981;--amber:#f59e0b;
   --red:#ef4444;--red-b:#f87171;--red-p:#450a0a;
-  --orange:#f97316;--orange-p:#431407;
-  --purple:#8b5cf6;--gray:#4b5563;--gray-l:#9ca3af;
+  --orange:#f97316;--purple:#8b5cf6;
+  --gray:#4b5563;--gray-l:#9ca3af;
   --white:#f1f5f9;--dim:#64748b;
   --r-sm:6px;--r-md:10px;--r-lg:16px;
   --mono:'JetBrains Mono',monospace;
 }
 body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--white);min-height:100vh}
 
-/* LOGIN */
+/* ── LOGIN ── */
 #login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:2rem}
 .login-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-lg);padding:2.5rem;text-align:center;max-width:380px;width:100%;position:relative;overflow:hidden}
 .login-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--blue),var(--cyan),var(--purple))}
@@ -34,7 +34,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--white);min-
 .login-error{background:var(--red-p);border:1px solid var(--red);border-radius:var(--r-sm);padding:10px 14px;font-size:12px;color:var(--red-b);margin-top:1rem;display:none}
 .login-footer{font-size:10px;color:var(--dim);margin-top:1.5rem;opacity:.6}
 
-/* CARGA */
+/* ── CARGA ── */
 #loading-screen{display:none;position:fixed;inset:0;background:var(--bg);z-index:1000;align-items:center;justify-content:center}
 .loading-inner{width:100%;max-width:480px;padding:2rem}
 .loading-header{display:flex;align-items:center;gap:12px;margin-bottom:2rem}
@@ -48,25 +48,23 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--white);min-
 .step{display:flex;align-items:center;gap:12px;padding:10px 14px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-md);transition:all .3s}
 .step.active{border-color:var(--blue);background:rgba(59,130,246,.08)}
 .step.done{border-color:rgba(16,185,129,.4);background:rgba(16,185,129,.06)}
-.step.done .step-icon{background:rgba(16,185,129,.2);border-color:var(--green);color:var(--green)}
-.step.active .step-icon{background:var(--blue-p);border-color:var(--blue);color:var(--blue-b);animation:stepPulse 1s infinite}
+.step.done .step-icon{background:rgba(16,185,129,.2);border-color:var(--green)}
+.step.active .step-icon{background:var(--blue-p);border-color:var(--blue);animation:stepPulse 1s infinite}
 .step-icon{width:28px;height:28px;border-radius:var(--r-sm);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;transition:all .3s}
-.step-label{font-size:12px;font-weight:500;color:var(--dim);transition:color .3s}
-.step.active .step-label{color:var(--white)}
-.step.done .step-label{color:var(--green)}
+.step-label{font-size:12px;font-weight:500;color:var(--dim);transition:color .3s;flex:1}
+.step.active .step-label,.step.done .step-label{color:var(--white)}
 .step-detail{font-size:10px;color:var(--dim);font-family:var(--mono);margin-top:2px;opacity:0;transition:opacity .3s}
 .step.active .step-detail,.step.done .step-detail{opacity:1}
-.step-check{font-size:14px;color:var(--green);opacity:0;transition:opacity .3s;margin-left:auto}
+.step-check{font-size:14px;color:var(--green);opacity:0;transition:opacity .3s}
 .step.done .step-check{opacity:1}
 @keyframes stepPulse{0%,100%{box-shadow:0 0 0 0 rgba(59,130,246,.4)}50%{box-shadow:0 0 0 4px rgba(59,130,246,0)}}
 .terminal{background:#050810;border:1px solid var(--border);border-radius:var(--r-md);padding:12px 14px;margin-top:1.5rem;font-family:var(--mono);font-size:10px;line-height:1.8;max-height:80px;overflow:hidden}
 .terminal-line{color:var(--dim)}
 .terminal-line.hl{color:var(--cyan)}
-.terminal-line.ok{color:var(--green)}
 .terminal-cursor{display:inline-block;width:6px;height:11px;background:var(--cyan);margin-left:2px;animation:blink 1s infinite;vertical-align:middle}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
 
-/* DASHBOARD */
+/* ── DASHBOARD ── */
 #dashboard-wrap{display:none;padding:1.5rem}
 .header{background:linear-gradient(135deg,#0f172a 0%,#1e3a5f 100%);border:1px solid var(--border);border-radius:var(--r-lg);padding:1.25rem 1.75rem;display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;flex-wrap:wrap;gap:12px;position:relative;overflow:hidden}
 .header::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--blue),var(--cyan),var(--purple))}
@@ -86,114 +84,83 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--white);min-
 .user-badge{font-size:11px;color:var(--dim);display:flex;align-items:center;gap:6px}
 .user-avatar{width:24px;height:24px;border-radius:50%;border:1px solid var(--border)}
 
-/* ERROR */
 #error-box{text-align:center;padding:3rem;color:var(--red);display:none;background:var(--red-p);border:1px solid var(--red);border-radius:var(--r-lg);margin-bottom:1rem}
-
-/* UPDATE INFO */
 .update-info{background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);color:var(--green);font-size:11px;padding:6px 14px;border-radius:var(--r-sm);margin-bottom:1.25rem;text-align:center;font-family:var(--mono)}
 
-/* MÉTRICAS GLOBALES */
+/* ── MÉTRICAS GLOBALES ── */
 .global-metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:1.5rem}
 .gm-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-md);padding:.9rem 1rem;position:relative;overflow:hidden}
 .gm-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px}
-.gm-blue::after{background:var(--blue)} .gm-green::after{background:var(--green)}
-.gm-amber::after{background:var(--amber)} .gm-red::after{background:var(--red)}
-.gm-cyan::after{background:var(--cyan)} .gm-orange::after{background:var(--orange)}
+.gm-blue::after{background:var(--blue)}.gm-green::after{background:var(--green)}
+.gm-amber::after{background:var(--amber)}.gm-red::after{background:var(--red)}
+.gm-cyan::after{background:var(--cyan)}.gm-orange::after{background:var(--orange)}
 .gm-card .lbl{font-size:10px;font-weight:600;color:var(--dim);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
 .gm-card .val{font-size:28px;font-weight:700;line-height:1;margin-bottom:3px}
 .gm-card .hint{font-size:10px;color:var(--dim)}
-.gm-blue .val{color:var(--blue-b)} .gm-green .val{color:var(--green)}
-.gm-amber .val{color:var(--amber)} .gm-red .val{color:var(--red-b)}
-.gm-cyan .val{color:var(--cyan)} .gm-orange .val{color:var(--orange)}
+.gm-blue .val{color:var(--blue-b)}.gm-green .val{color:var(--green)}
+.gm-amber .val{color:var(--amber)}.gm-red .val{color:var(--red-b)}
+.gm-cyan .val{color:var(--cyan)}.gm-orange .val{color:var(--orange)}
 
-/* MÓDULOS */
-.modules-wrap{display:flex;flex-direction:column;gap:10px;margin-bottom:1.5rem}
-.module{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;transition:border-color .2s}
-.module.open{border-color:rgba(59,130,246,.3)}
-.module-header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;cursor:pointer;user-select:none;transition:background .15s}
-.module-header:hover{background:rgba(255,255,255,.03)}
-.module-left{display:flex;align-items:center;gap:10px;flex:1;min-width:0}
-.module-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
-.module-name{font-size:13px;font-weight:600;color:var(--white)}
-.module-right{display:flex;align-items:center;gap:10px;flex-shrink:0}
-.module-count{font-size:11px;color:var(--dim);background:var(--bg);border:1px solid var(--border);padding:2px 8px;border-radius:20px;font-family:var(--mono)}
-.module-arrow{font-size:12px;color:var(--dim);transition:transform .25s}
-.module.open .module-arrow{transform:rotate(180deg)}
+/* ── NAV TABS ── */
+.nav-wrap{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-lg);padding:6px;margin-bottom:1.25rem;display:flex;gap:4px;flex-wrap:wrap;overflow-x:auto}
+.nav-tab{display:flex;align-items:center;gap:7px;padding:8px 14px;border-radius:var(--r-md);border:1px solid transparent;cursor:pointer;transition:all .2s;white-space:nowrap;font-size:12px;font-weight:500;color:var(--dim);background:transparent}
+.nav-tab:hover{background:rgba(255,255,255,.04);color:var(--white)}
+.nav-tab.active{color:var(--white);border-color:rgba(255,255,255,.1)}
+.nav-tab-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.nav-tab-count{font-size:10px;font-family:var(--mono);background:rgba(255,255,255,.08);padding:1px 6px;border-radius:10px;margin-left:2px}
+.nav-tab-pill{font-size:9px;font-weight:600;padding:1px 5px;border-radius:10px;white-space:nowrap}
+.p-red{background:rgba(239,68,68,.2);color:var(--red-b)}
+.p-cyan{background:rgba(6,182,212,.2);color:var(--cyan)}
 
-/* Mini resumen en header cerrado */
-.module-preview{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
-.prev-pill{font-size:10px;padding:2px 7px;border-radius:20px;white-space:nowrap}
-.prev-green{background:rgba(16,185,129,.15);color:var(--green)}
-.prev-blue{background:rgba(59,130,246,.15);color:var(--blue-b)}
-.prev-amber{background:rgba(245,158,11,.15);color:var(--amber)}
-.prev-red{background:rgba(239,68,68,.15);color:var(--red-b)}
-.prev-orange{background:rgba(249,115,22,.15);color:var(--orange)}
+/* ── MÓDULO ACTIVO ── */
+.module-view{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden}
+.module-top-bar{height:3px}
 
-/* Barra de progreso del módulo */
-.module-prog{height:2px;background:var(--border)}
-.module-prog-fill{height:2px;transition:width .4s ease}
-
-/* Métricas internas del módulo */
-.module-metrics{display:grid;gap:0;border-bottom:1px solid var(--border)}
-.mod-metric{padding:10px 14px;border-right:1px solid var(--border);text-align:center}
+/* Métricas del módulo */
+.mod-metrics-grid{display:grid;border-bottom:1px solid var(--border)}
+.mod-metric{padding:12px 16px;border-right:1px solid var(--border);text-align:center}
 .mod-metric:last-child{border-right:none}
-.mod-metric .ml{font-size:10px;color:var(--dim);margin-bottom:3px;white-space:nowrap}
-.mod-metric .mv{font-size:20px;font-weight:600}
+.mod-metric .ml{font-size:10px;color:var(--dim);margin-bottom:4px;text-transform:uppercase;letter-spacing:.06em}
+.mod-metric .mv{font-size:22px;font-weight:700}
 
-/* Tabla dentro del módulo */
-.module-body{overflow-x:auto}
-table{width:100%;border-collapse:collapse;font-size:12px;min-width:520px}
+/* Tabla */
+.module-table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:12px}
 thead tr{border-bottom:1px solid var(--border)}
-th{padding:8px 10px;text-align:left;font-size:10px;font-weight:600;color:var(--dim);text-transform:uppercase;letter-spacing:.07em;white-space:nowrap}
+th{padding:9px 12px;text-align:left;font-size:10px;font-weight:600;color:var(--dim);text-transform:uppercase;letter-spacing:.07em;white-space:nowrap;background:rgba(255,255,255,.02)}
 th.center,td.center{text-align:center}
-td{padding:9px 10px;border-bottom:1px solid rgba(30,45,69,.4);color:var(--gray-l);vertical-align:middle}
+td{padding:10px 12px;border-bottom:1px solid rgba(30,45,69,.4);color:var(--gray-l);vertical-align:middle}
 tr:last-child td{border-bottom:none}
 tr:hover td{background:rgba(59,130,246,.04)}
 .chk-yes{color:var(--green);font-size:14px;font-weight:700}
 .chk-no{color:var(--gray);font-size:11px}
 
+/* Nombre con tooltip */
+.td-name-wrap{position:relative}
+.td-name-text{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:500;color:var(--white);max-width:260px}
+.td-name-wrap:hover .td-tooltip{display:block}
+.td-tooltip{display:none;position:absolute;left:0;top:calc(100% + 4px);z-index:20;background:#1e2d45;border:1px solid var(--blue);border-radius:var(--r-sm);padding:6px 10px;font-size:11px;color:var(--white);white-space:normal;min-width:200px;max-width:360px;line-height:1.5;box-shadow:0 4px 12px rgba(0,0,0,.5)}
+
 /* Badges */
-.badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:600;padding:3px 8px;border-radius:20px;white-space:nowrap}
+.badge{display:inline-flex;align-items:center;gap:3px;font-size:10px;font-weight:600;padding:3px 8px;border-radius:20px;white-space:nowrap}
 .b-ok{background:rgba(16,185,129,.15);color:var(--green);border:1px solid rgba(16,185,129,.3)}
 .b-warn{background:rgba(245,158,11,.15);color:var(--amber);border:1px solid rgba(245,158,11,.3)}
 .b-danger{background:rgba(239,68,68,.15);color:var(--red-b);border:1px solid rgba(239,68,68,.3)}
 .b-info{background:rgba(59,130,246,.15);color:var(--blue-b);border:1px solid rgba(59,130,246,.3)}
 .b-neutral{background:rgba(75,85,99,.3);color:var(--gray-l);border:1px solid var(--gray)}
-.b-orange{background:rgba(249,115,22,.15);color:var(--orange);border:1px solid rgba(249,115,22,.3)}
-.b-medico{background:rgba(239,68,68,.2);color:var(--red-b);border:1px solid rgba(239,68,68,.4);font-size:9px;padding:2px 6px;border-radius:4px;margin-left:4px}
+.tag-medico{display:inline-flex;align-items:center;gap:3px;font-size:9px;font-weight:600;padding:2px 6px;border-radius:4px;background:rgba(239,68,68,.2);color:var(--red-b);border:1px solid rgba(239,68,68,.4);margin-left:5px;vertical-align:middle}
 
-/* Fila médica destacada */
-tr.row-medico td{background:rgba(239,68,68,.04)}
-tr.row-medico:hover td{background:rgba(239,68,68,.08)}
-
-/* Nombre con tooltip */
-.td-name{position:relative;max-width:280px}
-.td-name-text{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block;font-weight:500;color:var(--white)}
-.td-name:hover .td-tooltip{display:block}
-.td-tooltip{display:none;position:absolute;left:0;top:100%;z-index:10;background:#1e2d45;border:1px solid var(--blue);border-radius:var(--r-sm);padding:6px 10px;font-size:11px;color:var(--white);white-space:normal;min-width:200px;max-width:340px;line-height:1.5;margin-top:4px;box-shadow:0 4px 12px rgba(0,0,0,.4)}
+tr.row-medico td{background:rgba(239,68,68,.03)}
+tr.row-medico:hover td{background:rgba(239,68,68,.07)}
 
 /* Barra avance */
 .prog-wrap{height:4px;background:var(--border);border-radius:3px;margin-top:4px}
 .prog-fill{height:4px;border-radius:3px}
 
-/* Obs cell */
-.obs-cell{font-size:11px;color:var(--dim);font-style:italic;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+/* Obs */
+.obs-text{font-size:11px;color:var(--dim);font-style:italic;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 
-/* Sección médica separada */
-.medico-section{background:linear-gradient(135deg,rgba(239,68,68,.08) 0%,rgba(139,92,246,.05) 100%);border:1px solid rgba(239,68,68,.3);border-radius:var(--r-lg);padding:1.1rem 1.25rem;margin-bottom:1.25rem;display:none}
-.medico-header{display:flex;align-items:center;gap:10px;margin-bottom:12px}
-.medico-icon{width:30px;height:30px;background:var(--red-p);border:1px solid var(--red);border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center}
-.medico-icon svg{width:15px;height:15px;stroke:var(--red-b);fill:none;stroke-width:2}
-.medico-titulo{font-size:13px;font-weight:600;color:var(--red-b)}
-.medico-sub{font-size:11px;color:rgba(239,68,68,.6);margin-top:1px}
-.medico-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}
-.medico-card{background:rgba(10,14,26,.6);border:1px solid rgba(239,68,68,.2);border-radius:var(--r-md);padding:.85rem 1rem;display:flex;flex-direction:column;gap:8px}
-.medico-nombre{font-size:13px;font-weight:500;color:var(--white);line-height:1.4}
-.medico-lista{font-size:10px;color:var(--dim)}
-.medico-obs-label{font-size:10px;font-weight:600;color:rgba(239,68,68,.7);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px}
-.medico-obs{font-size:11px;color:var(--gray-l);background:rgba(239,68,68,.05);border:1px solid rgba(239,68,68,.15);border-radius:var(--r-sm);padding:6px 8px;line-height:1.5;min-height:30px;font-style:italic}
-
-.footer{text-align:center;font-size:11px;color:var(--dim);padding:1rem 0;opacity:.5;font-family:var(--mono)}
+.footer{text-align:center;font-size:11px;color:var(--dim);padding:1rem 0;opacity:.5;font-family:var(--mono);margin-top:1.25rem}
 @media(max-width:600px){#dashboard-wrap{padding:1rem}.global-metrics{grid-template-columns:repeat(2,1fr)}}
 </style>
 </head>
@@ -202,9 +169,7 @@ tr.row-medico:hover td{background:rgba(239,68,68,.08)}
 <!-- LOGIN -->
 <div id="login-screen">
   <div class="login-card">
-    <div class="login-logo">
-      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
-    </div>
+    <div class="login-logo"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg></div>
     <div class="login-title">Panel Operativo</div>
     <div class="login-sub">Del Toro Asesores · Seguros Monterrey NYL<br>Acceso restringido al equipo autorizado</div>
     <div class="login-divider">Inicia sesión con tu cuenta de Google</div>
@@ -214,25 +179,22 @@ tr.row-medico:hover td{background:rgba(239,68,68,.08)}
   </div>
 </div>
 
-<!-- PANTALLA DE CARGA -->
+<!-- CARGA -->
 <div id="loading-screen" style="display:none;position:fixed;inset:0;background:var(--bg);z-index:1000;align-items:center;justify-content:center">
   <div class="loading-inner">
     <div class="loading-header">
       <div class="loading-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg></div>
-      <div>
-        <div class="loading-title">Panel Operativo</div>
-        <div class="loading-subtitle" id="loading-subtitle">Iniciando sincronización...</div>
-      </div>
+      <div><div class="loading-title">Panel Operativo</div><div class="loading-subtitle" id="loading-subtitle">Iniciando sincronización...</div></div>
     </div>
     <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
     <div class="steps">
       <div class="step" id="step-1"><div class="step-icon">🔐</div><div style="flex:1"><div class="step-label">Autenticando con Google Drive</div><div class="step-detail" id="detail-1">Verificando credenciales...</div></div><div class="step-check">✓</div></div>
       <div class="step" id="step-2"><div class="step-icon">📡</div><div style="flex:1"><div class="step-label">Conectando con Trello API</div><div class="step-detail" id="detail-2">Obteniendo tarjetas y checklists...</div></div><div class="step-check">✓</div></div>
-      <div class="step" id="step-3"><div class="step-icon">⚙️</div><div style="flex:1"><div class="step-label">Procesando datos operativos</div><div class="step-detail" id="detail-3">Analizando estatus de trámites...</div></div><div class="step-check">✓</div></div>
-      <div class="step" id="step-4"><div class="step-icon">📊</div><div style="flex:1"><div class="step-label">Construyendo el dashboard</div><div class="step-detail" id="detail-4">Renderizando módulos...</div></div><div class="step-check">✓</div></div>
+      <div class="step" id="step-3"><div class="step-icon">⚙️</div><div style="flex:1"><div class="step-label">Procesando datos operativos</div><div class="step-detail" id="detail-3">Analizando estatus y firmas...</div></div><div class="step-check">✓</div></div>
+      <div class="step" id="step-4"><div class="step-icon">📊</div><div style="flex:1"><div class="step-label">Construyendo módulos</div><div class="step-detail" id="detail-4">Renderizando dashboard...</div></div><div class="step-check">✓</div></div>
     </div>
-    <div class="terminal" id="terminal">
-      <div class="terminal-line hl">$ iniciando panel-operativo v3.0</div>
+    <div class="terminal">
+      <div class="terminal-line hl">$ iniciando panel-operativo v3.1</div>
       <div class="terminal-line" id="term-line">conexión establecida<span class="terminal-cursor"></span></div>
     </div>
   </div>
@@ -243,10 +205,7 @@ tr.row-medico:hover td{background:rgba(239,68,68,.08)}
   <div class="header">
     <div class="header-left">
       <div class="header-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg></div>
-      <div>
-        <div class="header-title">Panel Operativo</div>
-        <div class="header-sub" id="header-sub">sincronizando...</div>
-      </div>
+      <div><div class="header-title">Panel Operativo</div><div class="header-sub" id="header-sub">sincronizando...</div></div>
     </div>
     <div class="header-right">
       <div class="user-badge"><img id="user-avatar" class="user-avatar" src="" alt="" style="display:none"><span id="user-name"></span></div>
@@ -257,7 +216,7 @@ tr.row-medico:hover td{background:rgba(239,68,68,.08)}
   </div>
   <div id="error-box"><p id="error-msg"></p></div>
   <div id="main"></div>
-  <div class="footer">panel-operativo v3 · N8N + Trello + Google Drive · del-toro-asesores</div>
+  <div class="footer">panel-operativo v3.1 · N8N + Trello + Google Drive · del-toro-asesores</div>
 </div>
 
 <script>
@@ -266,46 +225,52 @@ const APPS_SCRIPT_URL='https://script.google.com/macros/s/AKfycbzPL2c4C_dILez-lj
 const EMAILS_AUTORIZADOS=['sofia.ledesma@deltoroasesores.com','sofiaalethia@finanzasderaiz.com','sofiaalethia.ledesma@gmail.com','asistentesofia.alethia@gmail.com'];
 const LISTAS_EXCLUIDAS=['colores de representación','referidos'];
 
-// Configuración de cada módulo/lista
 const MODULOS=[
-  {key:'tramites', color:'#3b82f6', label:'Trámites Operativos Chava', tieneChecklist:true, tipo:'tramite',
-   match:t=>t.lista.toUpperCase().includes('TRAMITES OPERATIVOS'), defaultOpen:true},
-  {key:'cierresMay', color:'#06b6d4', label:'Cierres Mayo 2026', tieneChecklist:true, tipo:'cierre',
-   match:t=>t.lista.toUpperCase().includes('CIERRES')&&t.lista.includes('05'), defaultOpen:false},
-  {key:'cierresJun', color:'#8b5cf6', label:'Cierres Junio 2026', tieneChecklist:true, tipo:'cierre',
-   match:t=>t.lista.toUpperCase().includes('CIERRES')&&t.lista.includes('06'), defaultOpen:false},
-  {key:'cobranza', color:'#f59e0b', label:'Cobranza Fer', tieneChecklist:false,
-   match:t=>t.lista.toUpperCase().includes('COBRANZA'), defaultOpen:false},
-  {key:'atencion', color:'#10b981', label:'Atención al Cliente', tieneChecklist:false,
-   match:t=>t.lista.toUpperCase().includes('ATENCI'), defaultOpen:false},
-  {key:'prospectos', color:'#f97316', label:'Prospectos de Cierre', tieneChecklist:false,
-   match:t=>t.lista.toUpperCase().includes('PROSPECTO'), defaultOpen:false},
+  {key:'tramites',color:'#3b82f6',label:'Trámites Operativos',tieneChecklist:true,tipo:'tramite',
+   match:t=>t.lista.toUpperCase().includes('TRAMITES OPERATIVOS'),mostrarMedicos:true},
+  {key:'cierresMay',color:'#06b6d4',label:'Cierres Mayo 2026',tieneChecklist:true,tipo:'cierre',
+   match:t=>t.lista.toUpperCase().includes('CIERRES')&&t.lista.includes('05'),mostrarMedicos:false},
+  {key:'cierresJun',color:'#8b5cf6',label:'Cierres Junio 2026',tieneChecklist:true,tipo:'cierre',
+   match:t=>t.lista.toUpperCase().includes('CIERRES')&&t.lista.includes('06'),mostrarMedicos:false},
+  {key:'cobranza',color:'#f59e0b',label:'Cobranza Fer',tieneChecklist:false,
+   match:t=>t.lista.toUpperCase().includes('COBRANZA'),mostrarMedicos:false},
+  {key:'atencion',color:'#10b981',label:'Atención al Cliente',tieneChecklist:false,
+   match:t=>t.lista.toUpperCase().includes('ATENCI'),mostrarMedicos:false},
+  {key:'prospectos',color:'#f97316',label:'Prospectos de Cierre',tieneChecklist:false,
+   match:t=>t.lista.toUpperCase().includes('PROSPECTO'),mostrarMedicos:false},
 ];
 
-let chartDonut=null, datosGlobales=null;
+let datosGlobales=null, moduloActivo='tramites', tarjetasFiltradas=[];
 
 // ── Helpers ──────────────────────────────────────────────────
 function norm(s){return(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')}
 
+// Detecta etiqueta "Tramite Medico" por nombre exacto (sin acento)
 function esMedico(t){
-  return(t.labels||[]).some(l=>norm(l.name||'').includes('tramite medico'));
+  return(t.labels||[]).some(l=>(l.name||'').toLowerCase().trim()==='tramite medico');
 }
 
 function progColor(p){return p===100?'#10b981':p>=60?'#3b82f6':'#f59e0b'}
 
-// ── Pantalla de carga ─────────────────────────────────────────
+function ordenarCards(cards){
+  return[...cards].sort((a,b)=>{
+    const p=t=>t.urgente?0:(t.checks?.enviado&&!t.checks?.firmaCliente)?1:t.pct>0&&t.pct<100?2:t.pct===0?3:4;
+    return p(a)-p(b);
+  });
+}
+
+// ── Carga animada ─────────────────────────────────────────────
 function mostrarCarga(){
-  const el=document.getElementById('loading-screen');
-  el.style.display='flex';
+  document.getElementById('loading-screen').style.display='flex';
   const pasos=[
     {id:1,pct:25,sub:'Autenticando con Google Drive...',det:'drive.google.com · verificado',term:'GET /drive/v3/files → 200 OK'},
-    {id:2,pct:55,sub:'Descargando datos de Trello...',det:'api.trello.com · listas activas',term:'GET /boards/cards → procesando...'},
-    {id:3,pct:80,sub:'Procesando checklists...',det:'analizando firmas y estatus',term:'parseando tarjetas · detectando urgentes...'},
+    {id:2,pct:55,sub:'Descargando datos de Trello...',det:'sincronizando tarjetas activas',term:'GET /boards/cards → procesando...'},
+    {id:3,pct:80,sub:'Procesando checklists...',det:'analizando firmas y trámites médicos',term:'detectando estatus · parseando etiquetas...'},
     {id:4,pct:100,sub:'Construyendo módulos...',det:'renderizando dashboard',term:'panel listo ✓'},
   ];
   let i=0;
   const iv=setInterval(()=>{
-    if(i>0){const prev=document.getElementById(`step-${pasos[i-1].id}`);prev.classList.remove('active');prev.classList.add('done')}
+    if(i>0){const p=document.getElementById(`step-${pasos[i-1].id}`);p.classList.remove('active');p.classList.add('done')}
     if(i<pasos.length){
       const p=pasos[i];
       document.getElementById(`step-${p.id}`).classList.add('active');
@@ -324,9 +289,8 @@ window.onload=function(){
   const s=sessionStorage.getItem('usuario_autorizado');
   if(s){mostrarDashboard(JSON.parse(s));return}
   google.accounts.id.initialize({client_id:CLIENT_ID,callback:manejarLogin,auto_select:false});
-  google.accounts.id.renderButton(document.getElementById('google-btn'),{theme:'filled_black',size:'large',width:280,text:'signin_with',shape:'rectangular'});
+  google.accounts.id.renderButton(document.getElementById('google-btn'),{theme:'filled_black',size:'large',width:280});
 };
-
 function manejarLogin(resp){
   const p=JSON.parse(atob(resp.credential.split('.')[1]));
   const email=p.email.toLowerCase();
@@ -335,26 +299,19 @@ function manejarLogin(resp){
   sessionStorage.setItem('usuario_autorizado',JSON.stringify(u));
   mostrarDashboard(u);
 }
-
 function mostrarDashboard(u){
   document.getElementById('login-screen').style.display='none';
   document.getElementById('user-name').textContent=u.nombre||u.email;
   if(u.foto){const av=document.getElementById('user-avatar');av.src=u.foto;av.style.display='block'}
   cargarDatos();
 }
-
-function cerrarSesion(){
-  sessionStorage.removeItem('usuario_autorizado');
-  google.accounts.id.disableAutoSelect();
-  location.reload();
-}
+function cerrarSesion(){sessionStorage.removeItem('usuario_autorizado');google.accounts.id.disableAutoSelect();location.reload()}
 
 // ── Carga de datos ────────────────────────────────────────────
 function cargarDatos(){
   mostrarCarga();
   document.getElementById('dashboard-wrap').style.display='none';
   document.getElementById('error-box').style.display='none';
-
   fetch(APPS_SCRIPT_URL+'?key=deltoro2026&t='+Date.now())
     .then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.json()})
     .then(data=>{
@@ -378,153 +335,123 @@ function cargarDatos(){
 // ── Render principal ──────────────────────────────────────────
 function renderDashboard(data){
   const{tarjetas,actualizadoEn}=data;
-  const tf=tarjetas.filter(t=>!LISTAS_EXCLUIDAS.includes(norm(t.lista)));
+  tarjetasFiltradas=tarjetas.filter(t=>!LISTAS_EXCLUIDAS.includes(norm(t.lista)));
 
   const fecha=new Date(actualizadoEn).toLocaleString('es-MX',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
   document.getElementById('header-sub').textContent=`última sync · ${fecha}`;
 
-  // Stats globales (todas las listas)
-  const totalMedicos=tf.filter(t=>esMedico(t)).length;
   const stats={
-    concluidos:tf.filter(t=>t.pct===100).length,
-    enProceso:tf.filter(t=>t.pct>0&&t.pct<100).length,
-    sinIniciar:tf.filter(t=>t.pct===0).length,
-    firmaUrgente:tf.filter(t=>t.urgente).length,
-    medicos:totalMedicos,
-    vencen:tf.filter(t=>t.vencimiento&&t.pct<100&&new Date(t.vencimiento)<new Date(Date.now()+3*86400000)).length,
+    concluidos:tarjetasFiltradas.filter(t=>t.pct===100).length,
+    enProceso:tarjetasFiltradas.filter(t=>t.pct>0&&t.pct<100).length,
+    sinIniciar:tarjetasFiltradas.filter(t=>t.pct===0).length,
+    firmaUrgente:tarjetasFiltradas.filter(t=>t.urgente).length,
+    medicos:tarjetasFiltradas.filter(t=>esMedico(t)).length,
+    vencen:tarjetasFiltradas.filter(t=>t.vencimiento&&t.pct<100&&new Date(t.vencimiento)<new Date(Date.now()+3*86400000)).length,
   };
 
   document.getElementById('main').innerHTML=`
-    <div class="update-info">⚡ sync · ${fecha} · N8N actualiza cada 30 min · ${tf.length} tarjetas activas</div>
-    <div id="global-metrics"></div>
-    <div id="bloque-medico"></div>
-    <div class="modules-wrap" id="modules-wrap"></div>
+    <div class="update-info">⚡ sync · ${fecha} · N8N actualiza cada 30 min · ${tarjetasFiltradas.length} tarjetas activas</div>
+    <div id="global-metrics-wrap"></div>
+    <div id="nav-wrap-container"></div>
+    <div id="module-view-container"></div>
   `;
 
   renderGlobalMetrics(stats);
-  renderModulos(tf);
+  renderNav();
+  renderModuloActivo();
 }
 
 // ── Métricas globales ─────────────────────────────────────────
 function renderGlobalMetrics(s){
-  document.getElementById('global-metrics').innerHTML=`
+  document.getElementById('global-metrics-wrap').innerHTML=`
     <div class="global-metrics">
       <div class="gm-card gm-green"><div class="lbl">Concluidos</div><div class="val">${s.concluidos}</div><div class="hint">100% completados</div></div>
       <div class="gm-card gm-blue"><div class="lbl">En proceso</div><div class="val">${s.enProceso}</div><div class="hint">Avance parcial</div></div>
       <div class="gm-card gm-amber"><div class="lbl">Sin iniciar</div><div class="val">${s.sinIniciar}</div><div class="hint">0% de avance</div></div>
       <div class="gm-card gm-cyan"><div class="lbl">Pendiente Firma Sofía</div><div class="val">${s.firmaUrgente}</div><div class="hint">Cliente ya firmó</div></div>
-      <div class="gm-card gm-red"><div class="lbl">Trámites Médicos en Curso</div><div class="val">${s.medicos}</div><div class="hint">Etiqueta roja</div></div>
+      <div class="gm-card gm-red"><div class="lbl">Trámites Médicos en Curso</div><div class="val">${s.medicos}</div><div class="hint">Atención especial</div></div>
       <div class="gm-card gm-amber"><div class="lbl">Vencen pronto</div><div class="val">${s.vencen}</div><div class="hint">Próximos 3 días</div></div>
     </div>
   `;
 }
 
-// ── Módulos por lista ─────────────────────────────────────────
-function renderModulos(tarjetas){
-  const wrap=document.getElementById('modules-wrap');
-  wrap.innerHTML='';
-
-  MODULOS.forEach(cfg=>{
-    const cards=tarjetas.filter(t=>cfg.match(t));
-    if(!cards.length)return;
-
-    // Stats del módulo
-    const mStats={
-      concluidos:cards.filter(t=>t.pct===100).length,
-      enProceso:cards.filter(t=>t.pct>0&&t.pct<100).length,
-      sinIniciar:cards.filter(t=>t.pct===0).length,
-      firmaUrgente:cards.filter(t=>t.urgente).length,
-      medicos:cfg.tieneChecklist?cards.filter(t=>esMedico(t)).length:0,
-    };
-    const pctGlobal=Math.round(cards.reduce((s,c)=>s+c.pct,0)/cards.length);
-
-    // Ordenar por prioridad
-    const ordenar=arr=>[...arr].sort((a,b)=>{
-      const p=t=>t.urgente?0:(t.checks?.enviado&&!t.checks?.firmaCliente)?1:t.pct>0&&t.pct<100?2:t.pct===0?3:4;
-      return p(a)-p(b);
-    });
-    const cardsSorted=ordenar(cards);
-
-    const mod=document.createElement('div');
-    mod.className='module'+(cfg.defaultOpen?' open':'');
-    mod.id='mod-'+cfg.key;
-
-    // Preview pills para cabecera cerrada
-    const previewPills=`
-      <span class="prev-pill prev-green">✓ ${mStats.concluidos}</span>
-      <span class="prev-pill prev-blue">◐ ${mStats.enProceso}</span>
-      ${mStats.firmaUrgente>0?`<span class="prev-pill prev-cyan">✍ ${mStats.firmaUrgente} firma</span>`:''}
-      ${mStats.medicos>0?`<span class="prev-pill prev-red">⚕ ${mStats.medicos} médico${mStats.medicos>1?'s':''}</span>`:''}
-    `;
-
-    // Métricas internas — columnas según tipo
-    let metricsCols='';
-    if(cfg.tieneChecklist){
-      const cols=cfg.key==='tramites'?5:4;
-      metricsCols=`style="grid-template-columns:repeat(${cols},1fr)"`;
-    }else{
-      metricsCols='style="grid-template-columns:repeat(2,1fr)"';
-    }
-
-    let metricsHTML='';
-    if(cfg.tieneChecklist){
-      metricsHTML=`
-        <div class="module-metrics" ${metricsCols}>
-          <div class="mod-metric"><div class="ml">Concluidos</div><div class="mv" style="color:var(--green)">${mStats.concluidos}</div></div>
-          <div class="mod-metric"><div class="ml">En proceso</div><div class="mv" style="color:var(--blue-b)">${mStats.enProceso}</div></div>
-          <div class="mod-metric"><div class="ml">Sin iniciar</div><div class="mv" style="color:var(--amber)">${mStats.sinIniciar}</div></div>
-          <div class="mod-metric"><div class="ml">Pendiente Firma Sofía</div><div class="mv" style="color:var(--cyan)">${mStats.firmaUrgente}</div></div>
-          ${cfg.key==='tramites'?`<div class="mod-metric"><div class="ml">Trámites Médicos en Curso</div><div class="mv" style="color:var(--red-b)">${mStats.medicos}</div></div>`:''}
-        </div>
-      `;
-    }else{
-      metricsHTML=`
-        <div class="module-metrics" ${metricsCols}>
-          <div class="mod-metric"><div class="ml">Completadas</div><div class="mv" style="color:var(--green)">${mStats.concluidos}</div></div>
-          <div class="mod-metric"><div class="ml">Pendientes</div><div class="mv" style="color:var(--amber)">${cards.length-mStats.concluidos}</div></div>
-        </div>
-      `;
-    }
-
-    // Tabla
-    const tabla=buildTabla(cardsSorted,cfg);
-
-    mod.innerHTML=`
-      <div class="module-header" onclick="toggleModulo('${cfg.key}')">
-        <div class="module-left">
-          <span class="module-dot" style="background:${cfg.color};box-shadow:0 0 6px ${cfg.color}40"></span>
-          <span class="module-name">${cfg.label}</span>
-          <div class="module-preview" id="prev-${cfg.key}">${previewPills}</div>
-        </div>
-        <div class="module-right">
-          <span class="module-count">${cards.length} tarjeta${cards.length>1?'s':''}</span>
-          <span class="module-arrow">▼</span>
-        </div>
-      </div>
-      <div class="module-prog"><div class="module-prog-fill" style="width:${pctGlobal}%;background:${cfg.color}"></div></div>
-      <div class="module-content" id="content-${cfg.key}" style="${cfg.defaultOpen?'':'display:none'}">
-        ${metricsHTML}
-        <div class="module-body">${tabla}</div>
-      </div>
-    `;
-    wrap.appendChild(mod);
-
-    // Ocultar preview si está abierto
-    if(cfg.defaultOpen)document.getElementById(`prev-${cfg.key}`).style.display='none';
-  });
+// ── Navegación por tabs ───────────────────────────────────────
+function renderNav(){
+  const wrap=document.getElementById('nav-wrap-container');
+  const tabs=MODULOS.map(cfg=>{
+    const cards=tarjetasFiltradas.filter(t=>cfg.match(t));
+    if(!cards.length)return'';
+    const firmas=cards.filter(t=>t.urgente).length;
+    const medicos=cfg.mostrarMedicos?cards.filter(t=>esMedico(t)).length:0;
+    const pills=[
+      firmas>0?`<span class="nav-tab-pill p-cyan">✍ ${firmas}</span>`:'',
+      medicos>0?`<span class="nav-tab-pill p-red">⚕ ${medicos}</span>`:'',
+    ].join('');
+    return`
+      <div class="nav-tab${cfg.key===moduloActivo?' active':''}" id="tab-${cfg.key}"
+           onclick="cambiarModulo('${cfg.key}')"
+           style="${cfg.key===moduloActivo?`background:${cfg.color}22;border-color:${cfg.color}44`:''}">
+        <span class="nav-tab-dot" style="background:${cfg.color}"></span>
+        ${cfg.label}
+        <span class="nav-tab-count">${cards.length}</span>
+        ${pills}
+      </div>`;
+  }).join('');
+  wrap.innerHTML=`<div class="nav-wrap">${tabs}</div>`;
 }
 
-function toggleModulo(key){
-  const mod=document.getElementById('mod-'+key);
-  const content=document.getElementById('content-'+key);
-  const prev=document.getElementById('prev-'+key);
-  const isOpen=mod.classList.contains('open');
-  mod.classList.toggle('open',!isOpen);
-  content.style.display=isOpen?'none':'block';
-  prev.style.display=isOpen?'flex':'none';
+function cambiarModulo(key){
+  moduloActivo=key;
+  renderNav();
+  renderModuloActivo();
 }
 
-// ── Construcción de tabla ─────────────────────────────────────
+// ── Vista del módulo activo ───────────────────────────────────
+function renderModuloActivo(){
+  const cfg=MODULOS.find(m=>m.key===moduloActivo);
+  if(!cfg)return;
+  const cards=tarjetasFiltradas.filter(t=>cfg.match(t));
+  const cardsSorted=ordenarCards(cards);
+
+  const mStats={
+    concluidos:cards.filter(t=>t.pct===100).length,
+    enProceso:cards.filter(t=>t.pct>0&&t.pct<100).length,
+    sinIniciar:cards.filter(t=>t.pct===0).length,
+    firmaUrgente:cards.filter(t=>t.urgente).length,
+    medicos:cards.filter(t=>esMedico(t)).length,
+  };
+
+  let metricsHTML='';
+  if(cfg.tieneChecklist){
+    const cols=cfg.mostrarMedicos?5:4;
+    metricsHTML=`
+      <div class="mod-metrics-grid" style="grid-template-columns:repeat(${cols},1fr)">
+        <div class="mod-metric"><div class="ml">Concluidos</div><div class="mv" style="color:var(--green)">${mStats.concluidos}</div></div>
+        <div class="mod-metric"><div class="ml">En proceso</div><div class="mv" style="color:var(--blue-b)">${mStats.enProceso}</div></div>
+        <div class="mod-metric"><div class="ml">Sin iniciar</div><div class="mv" style="color:var(--amber)">${mStats.sinIniciar}</div></div>
+        <div class="mod-metric"><div class="ml">Pendiente Firma Sofía</div><div class="mv" style="color:var(--cyan)">${mStats.firmaUrgente}</div></div>
+        ${cfg.mostrarMedicos?`<div class="mod-metric"><div class="ml">Trámites Médicos en Curso</div><div class="mv" style="color:var(--red-b)">${mStats.medicos}</div></div>`:''}
+      </div>`;
+  }else{
+    metricsHTML=`
+      <div class="mod-metrics-grid" style="grid-template-columns:repeat(2,1fr)">
+        <div class="mod-metric"><div class="ml">Completadas</div><div class="mv" style="color:var(--green)">${mStats.concluidos}</div></div>
+        <div class="mod-metric"><div class="ml">Pendientes</div><div class="mv" style="color:var(--amber)">${cards.length-mStats.concluidos}</div></div>
+      </div>`;
+  }
+
+  const tabla=buildTabla(cardsSorted,cfg);
+
+  document.getElementById('module-view-container').innerHTML=`
+    <div class="module-view">
+      <div class="module-top-bar" style="background:${cfg.color}"></div>
+      ${metricsHTML}
+      <div class="module-table-wrap">${tabla}</div>
+    </div>
+  `;
+}
+
+// ── Tabla ─────────────────────────────────────────────────────
 function buildTabla(cards,cfg){
   const chk=v=>v?'<span class="chk-yes">✓</span>':'<span class="chk-no">—</span>';
 
@@ -536,31 +463,30 @@ function buildTabla(cards,cfg){
     return'<span class="badge b-neutral">○ Sin iniciar</span>';
   };
 
-  const getBadgeSimple=t=>{
-    if(t.pct===100)return'<span class="badge b-ok">✓ Completada</span>';
-    return'<span class="badge b-neutral">○ Pendiente</span>';
-  };
+  const getBadgeSimple=t=>t.pct===100?'<span class="badge b-ok">✓ Completada</span>':'<span class="badge b-neutral">○ Pendiente</span>';
 
-  const nameCell=(t)=>`
-    <div class="td-name">
-      <span class="td-name-text">${t.nombre}${esMedico(t)?'<span class="b-medico">⚕ Médico</span>':''}</span>
+  const nameCell=t=>`
+    <td><div class="td-name-wrap">
+      <span class="td-name-text">${t.nombre}${esMedico(t)?'<span class="tag-medico">⚕ Médico</span>':''}</span>
       <div class="td-tooltip">${t.nombre}</div>
-    </div>`;
+    </div></td>`;
 
-  let thead='',tbody='';
+  if(!cards.length)return`<div style="text-align:center;padding:3rem;color:var(--dim)">Sin tarjetas en esta lista</div>`;
+
+  let thead='',rows='';
 
   if(cfg.tieneChecklist&&cfg.tipo==='tramite'){
-    thead=`<tr><th style="width:32%">Tarjeta</th><th class="center">Llenado</th><th class="center">Enviado</th><th class="center">F. Cliente</th><th class="center">F. Sofía</th><th class="center">Portal</th><th class="center">Estatus</th><th style="width:9%">Avance</th></tr>`;
-    tbody=cards.map(t=>`<tr${esMedico(t)?' class="row-medico"':''}>${nameCell(t)}<td class="center">${chk(t.checks?.llenado)}</td><td class="center">${chk(t.checks?.enviado)}</td><td class="center">${chk(t.checks?.firmaCliente)}</td><td class="center">${chk(t.checks?.firmasofi)}</td><td class="center">${chk(t.checks?.portal)}</td><td class="center">${getBadge(t)}</td><td><span style="font-size:10px;color:var(--dim);font-family:var(--mono)">${t.pct}%</span><div class="prog-wrap"><div class="prog-fill" style="width:${t.pct}%;background:${progColor(t.pct)}"></div></div></td></tr>`).join('');
+    thead=`<tr><th style="min-width:200px">Tarjeta</th><th class="center">Llenado</th><th class="center">Enviado</th><th class="center">F. Cliente</th><th class="center">F. Sofía</th><th class="center">Portal</th><th class="center">Estatus</th><th style="min-width:70px">Avance</th></tr>`;
+    rows=cards.map(t=>`<tr${esMedico(t)?' class="row-medico"':''}>${nameCell(t)}<td class="center">${chk(t.checks?.llenado)}</td><td class="center">${chk(t.checks?.enviado)}</td><td class="center">${chk(t.checks?.firmaCliente)}</td><td class="center">${chk(t.checks?.firmasofi)}</td><td class="center">${chk(t.checks?.portal)}</td><td class="center">${getBadge(t)}</td><td><span style="font-size:10px;color:var(--dim);font-family:var(--mono)">${t.pct}%</span><div class="prog-wrap"><div class="prog-fill" style="width:${t.pct}%;background:${progColor(t.pct)}"></div></div></td></tr>`).join('');
   }else if(cfg.tieneChecklist){
-    thead=`<tr><th style="width:32%">Tarjeta</th><th class="center">Solicitud</th><th class="center">F. Cliente</th><th class="center">F. Sofía</th><th class="center">Autorizada</th><th class="center">Pagada</th><th class="center">Estatus</th><th style="width:9%">Avance</th></tr>`;
-    tbody=cards.map(t=>`<tr>${nameCell(t)}<td class="center">${chk(t.checks?.solicitud)}</td><td class="center">${chk(t.checks?.firmaCliente)}</td><td class="center">${chk(t.checks?.firmasofi)}</td><td class="center">${chk(t.checks?.autorizada)}</td><td class="center">${chk(t.checks?.pagada)}</td><td class="center">${getBadge(t)}</td><td><span style="font-size:10px;color:var(--dim);font-family:var(--mono)">${t.pct}%</span><div class="prog-wrap"><div class="prog-fill" style="width:${t.pct}%;background:${progColor(t.pct)}"></div></div></td></tr>`).join('');
+    thead=`<tr><th style="min-width:200px">Tarjeta</th><th class="center">Solicitud</th><th class="center">F. Cliente</th><th class="center">F. Sofía</th><th class="center">Autorizada</th><th class="center">Pagada</th><th class="center">Estatus</th><th style="min-width:70px">Avance</th></tr>`;
+    rows=cards.map(t=>`<tr>${nameCell(t)}<td class="center">${chk(t.checks?.solicitud)}</td><td class="center">${chk(t.checks?.firmaCliente)}</td><td class="center">${chk(t.checks?.firmasofi)}</td><td class="center">${chk(t.checks?.autorizada)}</td><td class="center">${chk(t.checks?.pagada)}</td><td class="center">${getBadge(t)}</td><td><span style="font-size:10px;color:var(--dim);font-family:var(--mono)">${t.pct}%</span><div class="prog-wrap"><div class="prog-fill" style="width:${t.pct}%;background:${progColor(t.pct)}"></div></div></td></tr>`).join('');
   }else{
-    thead=`<tr><th style="width:40%">Tarjeta</th><th>Observaciones</th><th class="center">Estatus</th></tr>`;
-    tbody=cards.map(t=>`<tr>${nameCell(t)}<td class="obs-cell" title="${t.desc||''}">${t.desc||'<span style="font-style:italic;color:var(--gray)">Sin observaciones</span>'}</td><td class="center">${getBadgeSimple(t)}</td></tr>`).join('');
+    thead=`<tr><th style="min-width:200px">Tarjeta</th><th>Observaciones</th><th class="center">Estatus</th></tr>`;
+    rows=cards.map(t=>`<tr>${nameCell(t)}<td><span class="obs-text" title="${t.desc||''}">${t.desc||'<em style="color:var(--gray)">Sin observaciones</em>'}</span></td><td class="center">${getBadgeSimple(t)}</td></tr>`).join('');
   }
 
-  return`<table><thead>${thead}</thead><tbody>${tbody||'<tr><td colspan="8" style="text-align:center;color:var(--dim);padding:2rem">Sin tarjetas</td></tr>'}</tbody></table>`;
+  return`<table><thead>${thead}</thead><tbody>${rows}</tbody></table>`;
 }
 </script>
 </body>
