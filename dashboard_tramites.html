@@ -322,7 +322,7 @@ const LISTAS_PATTERN=['tramites operativos','cierres','cobranza','atenci','prosp
 
 let datos=[], moduloActivo='tramites', filtro='', refreshTimer, refreshSeg=300;
 
-function norm(s){return(s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'')}
+function norm(s){return(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')}
 function esMedico(t){return(t.labels||[]).some(l=>(l.name||'').toLowerCase().trim()==='tramite medico')}
 function progColor(p){return p===100?'#10b981':p>=60?'#3b82f6':p>=30?'#f59e0b':'#ef4444'}
 
