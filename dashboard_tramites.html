@@ -521,12 +521,15 @@ function procesarCard(card,listMap){
 }
 
 function render(tarjetas){
-  var nUrg=tarjetas.filter(function(t){return t.urgente}).length;
-  var conc=tarjetas.filter(function(t){return t.pct===100}).length;
-  var proc=tarjetas.filter(function(t){return t.pct>0&&t.pct<100}).length;
-  var sinI=tarjetas.filter(function(t){return t.pct===0}).length;
-  var medA=tarjetas.filter(function(t){return esMedico(t)&&t.pct<100}).length;
-  var porV=tarjetas.filter(function(t){return t.vencimiento&&t.pct<100&&new Date(t.vencimiento)<new Date(Date.now()+3*86400000)}).length;
+  // KPIs reflejan solo el modulo activo, no el board completo
+  var cfgActivo=MODULOS.filter(function(m){return m.key===moduloActivo})[0];
+  var tarjetasModulo=cfgActivo?tarjetas.filter(cfgActivo.match):tarjetas;
+  var nUrg=tarjetasModulo.filter(function(t){return t.urgente}).length;
+  var conc=tarjetasModulo.filter(function(t){return t.pct===100}).length;
+  var proc=tarjetasModulo.filter(function(t){return t.pct>0&&t.pct<100}).length;
+  var sinI=tarjetasModulo.filter(function(t){return t.pct===0}).length;
+  var medA=tarjetasModulo.filter(function(t){return esMedico(t)&&t.pct<100}).length;
+  var porV=tarjetasModulo.filter(function(t){return t.vencimiento&&t.pct<100&&new Date(t.vencimiento)<new Date(Date.now()+3*86400000)}).length;
 
   // KPIs — cada uno activa un filtro al hacer clic
   var kpis=[
@@ -543,8 +546,8 @@ function render(tarjetas){
     '<div id="alert-wrap"></div>'+
     '<div class="kpis-section">'+
     '<div class="kpis-section-hdr">'+
-    '<span class="kpis-section-title">Vista global</span>'+
-    '<span class="kpis-section-hint">·  Suma todas las listas del tablero · clic para filtrar</span>'+
+    '<span class="kpis-section-title" id="kpis-title">'+(cfgActivo?cfgActivo.label:'Resumen')+'</span>'+
+    '<span class="kpis-section-hint">·  Clic en cualquier tarjeta para filtrar</span>'+
     '</div>'+
     '<div class="kpis">'+kpis.map(function(k,i){
       var esActivo=filtroActivo===k.fn.match(/'([^']+)'/)[1];
@@ -627,8 +630,7 @@ function renderNav(src){
 }
 function cambiarModulo(key){
   moduloActivo=key;filtro='';filtroActivo=null;
-  document.querySelectorAll('.kpi').forEach(function(el){el.classList.remove('activo')});
-  renderFiltros();renderNav();renderPanelEstatico();renderTablas();
+  render(datos);
 }
 
 // Parte estatica del panel (header, mini-stats, buscador) — no se re-renderiza al escribir
