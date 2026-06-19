@@ -130,7 +130,11 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-h
 .btn-alert:hover{background:#991b1b;transform:translateY(-1px)}
 
 /* KPIs — todos con la misma estructura, variacion solo en el acento */
-.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:10px;margin-bottom:1.25rem}
+.kpis-section{margin-bottom:1.25rem}
+.kpis-section-hdr{display:flex;align-items:center;gap:8px;margin-bottom:8px;padding:0 2px}
+.kpis-section-title{font-size:10px;font-weight:700;color:var(--dim);text-transform:uppercase;letter-spacing:.12em}
+.kpis-section-hint{font-size:10px;color:var(--dim);opacity:.7}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:10px}
 .kpi{background:var(--surface);border:1px solid var(--border);border-radius:var(--r);
   padding:1.1rem 1.25rem;box-shadow:var(--shadow);position:relative;overflow:hidden;
   transition:transform .18s,box-shadow .18s,border-color .18s;cursor:pointer}
@@ -394,6 +398,12 @@ function norm(s){
   return r;
 }
 function esMedico(t){return(t.labels||[]).some(function(l){return norm(l.name||'')==='tramite medico'})}
+// Detecta tarjetas plantilla/template para excluirlas del conteo
+function esPlantilla(nombre){
+  var n=norm(nombre);
+  var patrones=['tramites operativos','plantilla','template','ejemplo','base'];
+  return patrones.some(function(p){return n===p||n===p+' chava'});
+}
 function progColor(p){return p===100?'#16a34a':p>=60?'#2563eb':p>=30?'#d97706':'#dc2626'}
 function creadoEn(id){return parseInt(id.substring(0,8),16)*1000}
 function diasAbierto(id){return Math.floor((Date.now()-creadoEn(id))/86400000)}
@@ -475,6 +485,7 @@ async function cargarDatos(){
     (data.lists||[]).forEach(function(l){listMap[l.id]=l.name});
     var tarjetas=(data.cards||[])
       .filter(function(c){return listMap[c.idList]&&LISTAS_PATTERN.some(function(p){return norm(listMap[c.idList]).includes(p)})})
+      .filter(function(c){return !esPlantilla(c.name)})
       .map(function(c){return procesarCard(c,listMap)});
     setTimeout(function(){
       ocultarCarga();
@@ -530,6 +541,11 @@ function render(tarjetas){
   var main=document.getElementById('main');
   main.innerHTML=
     '<div id="alert-wrap"></div>'+
+    '<div class="kpis-section">'+
+    '<div class="kpis-section-hdr">'+
+    '<span class="kpis-section-title">Vista global</span>'+
+    '<span class="kpis-section-hint">·  Suma todas las listas del tablero · clic para filtrar</span>'+
+    '</div>'+
     '<div class="kpis">'+kpis.map(function(k,i){
       var esActivo=filtroActivo===k.fn.match(/'([^']+)'/)[1];
       return'<div class="kpi '+k.cls+(esActivo?' activo':'')+'" onclick="'+k.fn+'" title="Clic para filtrar">'+
@@ -538,7 +554,7 @@ function render(tarjetas){
         '<div class="kpi-val" id="kv'+i+'">0</div>'+
         '<div class="kpi-hint">'+k.hint+'</div>'+
         '</div>';
-    }).join('')+'</div>'+
+    }).join('')+'</div></div>'+
     '<div id="filtros-wrap"></div><div id="nav-el"></div><div id="panel-static"></div>';
 
   kpis.forEach(function(k,i){animateVal(document.getElementById('kv'+i),k.val)});
